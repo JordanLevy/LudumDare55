@@ -22,8 +22,9 @@ func _ready():
 func _on_countdown_start():
 	print("countdown")
 	game_state = GameState.COUNTDOWN
-	timer_end = Time.get_unix_time_from_system() + 10
+	timer_end = Time.get_unix_time_from_system() + 3
 	
 func _on_round_start():
 	print("playing")
 	game_state = GameState.PLAYING
+	timer_end = Time.get_unix_time_from_system() + 60
