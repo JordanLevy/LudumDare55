@@ -3,6 +3,4 @@ res://Arena/Pentagram.gd
 res://Arena/Pentagram.tres
 res://MultiplayerTest/MultiplayerGame.tscn
 res://Candle/Candle.tscn
-res://Player/Player.gd
-res://MultiplayerTest/MultiplayerGame.gd
-res://Candle/Candle.gd
+res://GameManager/GameManager.tscn

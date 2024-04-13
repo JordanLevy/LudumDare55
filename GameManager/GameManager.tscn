@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2eb1sihlbqld"]
+
+[ext_resource type="Script" path="res://GameManager/GameManager.gd" id="1_26m7q"]
+
+[node name="GameManager" type="Node2D"]
+script = ExtResource("1_26m7q")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

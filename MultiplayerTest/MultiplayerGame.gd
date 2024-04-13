@@ -10,11 +10,12 @@ const PORT = 9999
 var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
 
-var num_players = 0
-
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("pause"):
 		get_tree().quit()
+		
+func _ready():
+	pass
 
 func _on_host_pressed():
 	main_menu.hide()
@@ -37,11 +38,13 @@ func add_player(peer_id):
 	player.name = str(peer_id)
 	player.velocity = Vector2.ZERO
 	player.position = Vector2.ZERO
+	GameManager.num_players += 1
 	add_child(player)
 	if player.is_multiplayer_authority():
-		print("connect")
 		player.health_changed.connect(update_health_bar)
 		player.health_changed.emit(player.health)
+	if GameManager.num_players == 2:
+		GameManager.countdown_started.emit()
 
 func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))

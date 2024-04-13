@@ -1,4 +1,6 @@
+res://GameManager
+res://Clock
+res://MultiplayerTest
 res://Candle
 res://Arena
-res://MultiplayerTest
 res://Player
