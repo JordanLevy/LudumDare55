@@ -3,3 +3,5 @@ res://MultiplayerTest/MultiplayerTest.gd
 res://MultiplayerTest/MultiplayerTest.tscn
 res://Player/Player.gd
 res://MultiplayerTest/MultiplayerGame.tscn
+res://Arena/Pentagram.gd
+res://Arena/Pentagram.tres
