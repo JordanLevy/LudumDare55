@@ -13,8 +13,8 @@ func _process(delta):
 
 
 func _on_area_2d_body_entered(body):
-	print("Entered", body.id)
+	print("Entered", body.name)
 
 
 func _on_area_2d_body_exited(body):
-	print("Exited", body.id)
+	print("Exited", body.name)

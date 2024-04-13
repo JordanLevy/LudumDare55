@@ -15,8 +15,6 @@ var prev_joystick_position: Vector2
 
 var is_in_hitstun: bool = false;
 
-var id
-
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 

@@ -1,9 +1,8 @@
-res://MultiplayerTest/MultiplayerGame.tscn
+res://Player/Player.tscn
 res://Arena/Pentagram.gd
 res://Arena/Pentagram.tres
-res://Player/Player.tscn
+res://MultiplayerTest/MultiplayerGame.tscn
 res://Candle/Candle.tscn
-res://Candle/Fire.tscn
-res://Candle/Candle.gd
-res://MultiplayerTest/MultiplayerGame.gd
 res://Player/Player.gd
+res://MultiplayerTest/MultiplayerGame.gd
+res://Candle/Candle.gd

@@ -53,7 +53,7 @@ text = "Join"
 [node name="AddressEntry" type="TextEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "dfsdfsdf"
+text = "localhost"
 
 [node name="HUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3
