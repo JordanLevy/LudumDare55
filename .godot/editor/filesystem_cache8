@@ -1,0 +1,10 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1712975891
+icon.svg::CompressedTexture2D::4196021273935293496::1712974076::1712974086::1::::<><>::
+README.md::TextFile::-1::1712975823::0::1::::<><>::
+::res://MultiplayerTest/::1712975570
+MultiplayerTest.gd::GDScript::-1::1712975342::0::1::::<>Node2D<>::
+MultiplayerTest.tscn::PackedScene::4853060897372264772::1712975570::0::1::::<><>::res://MultiplayerTest/MultiplayerTest.gd<>uid://b7sbw33fnm4er::::res://Player/Player.tscn
+::res://Player/::1712975570
+Player.gd::GDScript::-1::1712975507::0::1::::<>CharacterBody2D<>::
+Player.tscn::PackedScene::4669723998295269981::1712975570::0::1::::<><>::res://Player/Player.gd<>uid://b01t4fcycn1no::::res://icon.svg
