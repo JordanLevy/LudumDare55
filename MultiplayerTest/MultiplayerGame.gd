@@ -10,6 +10,8 @@ const PORT = 9999
 var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
 
+var num_players = 0
+
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("pause"):
 		get_tree().quit()
@@ -33,6 +35,8 @@ func _on_join_pressed():
 func add_player(peer_id):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
+	num_players += 1
+	player.id = num_players
 	add_child(player)
 	if player.is_multiplayer_authority():
 		print("connect")

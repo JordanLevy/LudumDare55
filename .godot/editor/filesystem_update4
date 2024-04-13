@@ -4,3 +4,6 @@ res://Arena/Pentagram.tres
 res://Player/Player.tscn
 res://Candle/Candle.tscn
 res://Candle/Fire.tscn
+res://Candle/Candle.gd
+res://MultiplayerTest/MultiplayerGame.gd
+res://Player/Player.gd
