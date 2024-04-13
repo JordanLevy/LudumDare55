@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1ra0mrd25srh"]
+
+[ext_resource type="Texture2D" uid="uid://bjvlxluuucdhe" path="res://Candle/Candle.png" id="1_egedu"]
+[ext_resource type="PackedScene" uid="uid://sgb3fncg6omo" path="res://Candle/Fire.tscn" id="2_en12r"]
+
+[node name="Candle" type="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("1_egedu")
+
+[node name="Fire" parent="." instance=ExtResource("2_en12r")]
+position = Vector2(-2, -9)

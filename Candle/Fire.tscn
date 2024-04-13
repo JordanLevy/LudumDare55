@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://sgb3fncg6omo"]
+
+[sub_resource type="Gradient" id="Gradient_lsb70"]
+offsets = PackedFloat32Array(0, 0.483204, 1)
+colors = PackedColorArray(0.905882, 0.870588, 0, 1, 1, 0.321569, 0.160784, 1, 1, 0, 0.160784, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_52ru1"]
+gradient = SubResource("Gradient_lsb70")
+
+[sub_resource type="Curve" id="Curve_6fxww"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.983133, 0.380385), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tmfrh"]
+curve = SubResource("Curve_6fxww")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xxs8w"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 3.0
+emission_ring_radius = 3.0
+emission_ring_inner_radius = 3.0
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0, -98, 0)
+scale_min = 6.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_tmfrh")
+color_ramp = SubResource("GradientTexture1D_52ru1")
+turbulence_enabled = true
+turbulence_noise_scale = 1.08
+turbulence_noise_speed = Vector3(0.5, 0.5, 0.5)
+
+[node name="Fire" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_xxs8w")

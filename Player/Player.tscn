@@ -14,11 +14,11 @@ properties/1/replication_mode = 1
 [sub_resource type="Animation" id="Animation_gdc24"]
 resource_name = "idle"
 
-[sub_resource type="Animation" id="Animation_boy56"]
-resource_name = "move"
-
 [sub_resource type="Animation" id="Animation_xerif"]
 resource_name = "melee"
+
+[sub_resource type="Animation" id="Animation_boy56"]
+resource_name = "move"
 
 [sub_resource type="Animation" id="Animation_xivmc"]
 resource_name = "special"
