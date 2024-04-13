@@ -7,7 +7,7 @@ var candles: Array
 var candle_offset = Vector2(0, -10)
 
 func _ready():
-	var offset = get_viewport_rect().size / 2.0
+	var offset = Vector2.ZERO
 	clear_points()
 	for i in [5*PI/10, 13*PI/10, PI/10, 9*PI/10, 17*PI/10, 5*PI/10]:
 		var point = Vector2(cos(i), -sin(i)) * radius + offset

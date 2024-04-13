@@ -35,6 +35,8 @@ func _on_join_pressed():
 func add_player(peer_id):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
+	player.velocity = Vector2.ZERO
+	player.position = Vector2.ZERO
 	add_child(player)
 	if player.is_multiplayer_authority():
 		print("connect")

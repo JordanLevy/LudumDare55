@@ -10,8 +10,8 @@ const MAX_SPEED = 600.0
 const GROUND_FRICTION = 0.99
 
 var using_gamepad: bool = false
-var mouse_position: Vector2
-var prev_joystick_position: Vector2
+var mouse_position: Vector2 = Vector2.ZERO
+var prev_joystick_position: Vector2 = Vector2.ZERO
 
 var is_in_hitstun: bool = false;
 
@@ -19,8 +19,6 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
-	velocity = Vector2.ZERO
-	position = get_viewport_rect().size / 2.0
 	if not is_multiplayer_authority(): return
 
 func _unhandled_input(event):
@@ -36,7 +34,7 @@ func _unhandled_input(event):
 		using_gamepad = false
 	elif event is InputEventMouseMotion:
 		using_gamepad = false
-		mouse_position = event.position
+		mouse_position = event.position - get_viewport_rect().size / 2
 	
 	if Input.is_action_just_pressed("melee") and !is_attacking():
 		play_melee_effects.rpc()
@@ -66,6 +64,8 @@ func _physics_process(delta):
 		rotation = atan2(prev_joystick_position.y, prev_joystick_position.x)
 	else:
 		rotation = atan2(mouse_position.y - position.y, mouse_position.x - position.x)
+
+	print(mouse_position)
 
 	if anim_player.current_animation == "melee":
 		pass

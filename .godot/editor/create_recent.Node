@@ -1,3 +1,4 @@
+Camera2D
 CollisionShape2D
 Area2D
 GPUParticles2D
@@ -6,7 +7,6 @@ Timer
 Line2D
 Path2D
 Polygon2D
-Camera2D
 TileMap
 CanvasLayer
 AnimationPlayer
