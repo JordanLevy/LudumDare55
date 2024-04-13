@@ -2,3 +2,4 @@ res://Player/Player.tscn
 res://MultiplayerTest/MultiplayerTest.gd
 res://MultiplayerTest/MultiplayerTest.tscn
 res://Player/Player.gd
+res://MultiplayerTest/MultiplayerGame.tscn

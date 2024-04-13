@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="RitualRumble"
-run/main_scene="res://MultiplayerTest/MultiplayerTest.tscn"
+run/main_scene="res://MultiplayerTest/MultiplayerGame.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
