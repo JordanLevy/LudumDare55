@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7sbw33fnm4er"]
+[gd_scene load_steps=9 format=3 uid="uid://b7sbw33fnm4er"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_6hnr4"]
 [ext_resource type="Texture2D" uid="uid://b01t4fcycn1no" path="res://icon.svg" id="2_plmir"]
@@ -7,6 +7,9 @@
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [sub_resource type="Animation" id="Animation_gdc24"]
 resource_name = "idle"
@@ -17,11 +20,15 @@ resource_name = "move"
 [sub_resource type="Animation" id="Animation_xerif"]
 resource_name = "melee"
 
+[sub_resource type="Animation" id="Animation_xivmc"]
+resource_name = "special"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_su6xd"]
 _data = {
 "idle": SubResource("Animation_gdc24"),
 "melee": SubResource("Animation_xerif"),
-"move": SubResource("Animation_boy56")
+"move": SubResource("Animation_boy56"),
+"special": SubResource("Animation_xivmc")
 }
 
 [node name="Player" type="CharacterBody2D"]
