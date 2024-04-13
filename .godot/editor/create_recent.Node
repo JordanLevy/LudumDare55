@@ -1,3 +1,13 @@
+AnimationPlayer
+Camera2D
+ProgressBar
+Label
+Control
+TextEdit
+VBoxContainer
+MarginContainer
+CanvasLayer
+ItemList
 MultiplayerSynchronizer
 MultiplayerSpawner
 Button

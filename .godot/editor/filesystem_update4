@@ -1,4 +1,4 @@
 res://Player/Player.tscn
-res://Player/Player.gd
-res://MultiplayerTest/MultiplayerTest.tscn
 res://MultiplayerTest/MultiplayerTest.gd
+res://MultiplayerTest/MultiplayerTest.tscn
+res://Player/Player.gd
