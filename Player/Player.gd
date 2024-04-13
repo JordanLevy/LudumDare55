@@ -65,8 +65,6 @@ func _physics_process(delta):
 	else:
 		rotation = atan2(mouse_position.y - position.y, mouse_position.x - position.x)
 
-	print(mouse_position)
-
 	if anim_player.current_animation == "melee":
 		pass
 	elif input_dir != Vector2.ZERO:
