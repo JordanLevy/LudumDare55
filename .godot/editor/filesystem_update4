@@ -6,3 +6,4 @@ res://Candle/Candle.tscn
 res://GameManager/GameManager.tscn
 res://Clock/Clock.gd
 res://GameManager/GameManager.gd
+res://Player/Player.gd
