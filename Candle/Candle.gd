@@ -20,30 +20,46 @@ func update_fire_color():
 	elif belongs_to == 2:
 		fire.modulate = Color(0, 0, 255)
 
+func all_values_equal(list):
+	var first_value = null
+	for value in list:
+		if first_value == null:
+			first_value = value
+		elif first_value != value:
+			return false
+	return true
+
+func set_belongs_to(value):
+	belongs_to = value
+	GameManager.candles_belong_to[id] = value
+	var first = GameManager.candles_belong_to[0]
+	if (first == 1 or first == 2) and all_values_equal(GameManager.candles_belong_to):
+		GameManager.round_ended.emit(first)
+
 func _on_area_2d_body_entered(body):
 	if body.id == 1:
 		contested_by_p1 = true
 		if contested_by_p2:
-			belongs_to = -1
+			set_belongs_to(-1)
 		else:
-			belongs_to = 1
+			set_belongs_to(1)
 	elif body.id == 2:
 		contested_by_p2 = true
 		if contested_by_p1:
-			belongs_to = -1
+			set_belongs_to(-1)
 		else:
-			belongs_to = 2
+			set_belongs_to(2)
 	update_fire_color()
 
 func _on_area_2d_body_exited(body):
 	if body.id == 1:
 		contested_by_p1 = false
 		if contested_by_p2:
-			belongs_to = 2
+			set_belongs_to(2)
 	elif body.id == 2:
 		contested_by_p2 = false
 		if contested_by_p1:
-			belongs_to = 1
+			set_belongs_to(1)
 	update_fire_color()
 	
 	

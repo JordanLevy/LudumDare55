@@ -1,8 +1,12 @@
-[gd_resource type="VisualShader" load_steps=2 format=3 uid="uid://bbrut78djgdp3"]
+[gd_resource type="VisualShader" load_steps=3 format=3 uid="uid://bbrut78djgdp3"]
 
 [sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_qjmy7"]
 output_port_for_preview = 0
-constant = Color(0.964706, 0, 0.741176, 1)
+constant = Color(100, 100, 100, 1)
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_cq2ul"]
+output_port_for_preview = 0
+constant = Color(0, 0.188235, 0.313726, 1)
 
 [resource]
 code = "shader_type canvas_item;
@@ -13,7 +17,7 @@ render_mode blend_mix;
 
 void fragment() {
 // ColorConstant:2
-	vec4 n_out2p0 = vec4(0.964706, 0.000000, 0.741176, 1.000000);
+	vec4 n_out2p0 = vec4(100.000000, 100.000000, 100.000000, 1.000000);
 
 
 // Output:0
@@ -21,9 +25,24 @@ void fragment() {
 
 
 }
+
+void light() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.000000, 0.188235, 0.313726, 1.000000);
+
+
+// Output:0
+	LIGHT.rgb = vec3(n_out2p0.xyz);
+
+
+}
 "
 mode = 1
 flags/light_only = false
+nodes/fragment/0/position = Vector2(380, 100)
 nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_qjmy7")
-nodes/fragment/2/position = Vector2(180, 80)
+nodes/fragment/2/position = Vector2(100, 80)
 nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/2/node = SubResource("VisualShaderNodeColorConstant_cq2ul")
+nodes/light/2/position = Vector2(180, 140)
+nodes/light/connections = PackedInt32Array(2, 0, 0, 0)

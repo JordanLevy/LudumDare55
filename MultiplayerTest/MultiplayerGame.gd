@@ -5,7 +5,6 @@ extends Node
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
 
-
 const PORT = 9999
 var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene

@@ -7,6 +7,7 @@ var candles: Array
 var candle_offset = Vector2(0, -10)
 
 func _ready():
+	GameManager.round_ended.connect(_on_round_ended)
 	var offset = Vector2.ZERO
 	clear_points()
 	var pentagram_angles = [5*PI/10, 13*PI/10, PI/10, 9*PI/10, 17*PI/10, 5*PI/10]
@@ -25,3 +26,10 @@ func _ready():
 		var angle = PI/2 + i * TAU / num_circle_points
 		var point = Vector2(cos(angle), -sin(angle)) * radius + offset
 		add_point(point)
+		
+func _on_round_ended(winner: int):
+	print("winner", winner)
+	if winner == 1:
+		self_modulate = Color(255, 0, 0)
+	elif winner == 2:
+		self_modulate = Color(0, 0, 255)

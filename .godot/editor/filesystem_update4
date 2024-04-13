@@ -2,9 +2,7 @@ res://Player/Player.tscn
 res://Arena/Pentagram.gd
 res://Arena/Pentagram.tres
 res://MultiplayerTest/MultiplayerGame.tscn
-res://Candle/Candle.tscn
 res://GameManager/GameManager.tscn
-res://Candle/Fire.tscn
-res://Candle/Candle.gd
-res://Player/Player.gd
-res://MultiplayerTest/MultiplayerGame.gd
+res://Candle/Candle.tscn
+res://Clock/Clock.gd
+res://GameManager/GameManager.gd

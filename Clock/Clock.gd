@@ -20,7 +20,7 @@ func _process(delta):
 		GameManager.countdown_started.emit()
 	elif time_remaining <= GameManager.ROUND_END_DURATION:
 		formatted_time = "round_end"
-		GameManager.round_ended.emit()
+		#GameManager.round_ended.emit()
 	elif time_remaining <= GameManager.ROUND_DURATION + GameManager.ROUND_END_DURATION:
 		formatted_time = "playing"
 		time_remaining -= GameManager.ROUND_END_DURATION
