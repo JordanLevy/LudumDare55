@@ -19,6 +19,8 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
+	velocity = Vector2.ZERO
+	position = get_viewport_rect().size / 2.0
 	if not is_multiplayer_authority(): return
 
 func _unhandled_input(event):
