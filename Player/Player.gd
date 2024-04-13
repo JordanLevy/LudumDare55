@@ -4,6 +4,7 @@ signal health_changed(health_value)
 
 @onready var anim_player = $AnimationPlayer
 
+var id: int = 2
 var health = 100
 const ACCELERATION = 900.0
 const MAX_SPEED = 600.0
@@ -50,8 +51,8 @@ func is_attacking():
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
 	
-	if GameManager.game_state != GameManager.GameState.PLAYING:
-		return
+	#if GameManager.game_state != GameManager.GameState.PLAYING:
+		#return
 
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = input_dir.normalized()

@@ -41,8 +41,11 @@ func add_player(peer_id):
 	GameManager.num_players += 1
 	add_child(player)
 	if player.is_multiplayer_authority():
+		player.id = 1
 		player.health_changed.connect(update_health_bar)
 		player.health_changed.emit(player.health)
+	else:
+		player.id = 2
 	if GameManager.num_players == 2:
 		GameManager.countdown_started.emit()
 

@@ -1,20 +1,49 @@
 extends Sprite2D
 
+@onready var fire = $Fire
 
+var id = 0
+var belongs_to = 0
+var contested_by_p1 = false
+var contested_by_p2 = false
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	update_fire_color()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
+func update_fire_color():
+	if belongs_to == -1:
+		fire.modulate = Color(0, 0, 0)
+	elif belongs_to == 0:
+		fire.modulate = Color(255, 255, 255)
+	elif belongs_to == 1:
+		fire.modulate = Color(255, 0, 0)
+	elif belongs_to == 2:
+		fire.modulate = Color(0, 0, 255)
 
 func _on_area_2d_body_entered(body):
-	print("Entered", body.name)
-
+	if body.id == 1:
+		contested_by_p1 = true
+		if contested_by_p2:
+			belongs_to = -1
+		else:
+			belongs_to = 1
+	elif body.id == 2:
+		contested_by_p2 = true
+		if contested_by_p1:
+			belongs_to = -1
+		else:
+			belongs_to = 2
+	update_fire_color()
 
 func _on_area_2d_body_exited(body):
-	print("Exited", body.name)
+	if body.id == 1:
+		contested_by_p1 = false
+		if contested_by_p2:
+			belongs_to = 2
+	elif body.id == 2:
+		contested_by_p2 = false
+		if contested_by_p1:
+			belongs_to = 1
+	update_fire_color()
+	
+	
