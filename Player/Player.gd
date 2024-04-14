@@ -95,6 +95,20 @@ func _physics_process(delta):
 		anim_player.play("move")
 	else:
 		anim_player.play("idle")
+		
+	var viewport_size = get_viewport_rect().size
+	var width = viewport_size.x
+	var height = viewport_size.y
+	
+	if global_position.x > width:
+		global_position.x -= width * 2
+	elif global_position.x < -width:
+		global_position.x += width * 2
+	if global_position.y > height:
+		global_position.y -= height * 2
+	elif global_position.y < -height:
+		global_position.y += height * 2
+	
 
 	move_and_slide()
 
