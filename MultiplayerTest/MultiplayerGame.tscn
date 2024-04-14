@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cbe4g60utb2c3"]
+[gd_scene load_steps=14 format=3 uid="uid://cbe4g60utb2c3"]
 
 [ext_resource type="Script" path="res://MultiplayerTest/MultiplayerGame.gd" id="1_8e57u"]
 [ext_resource type="PackedScene" uid="uid://b7sbw33fnm4er" path="res://Player/Player.tscn" id="2_qia5a"]
@@ -19,6 +19,14 @@ texture_region_size = Vector2i(64, 64)
 [sub_resource type="TileSet" id="TileSet_w3q0n"]
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_hblx3")
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iic0s"]
+properties/0/path = NodePath("Camera2D:zoom")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Camera2D:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="MultiplayerGame" type="Node2D"]
 script = ExtResource("1_8e57u")
@@ -115,6 +123,10 @@ layer_0/tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 0, 131072, 0, 0, 196608,
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("7_jmwej")
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_iic0s")
+
+[connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="toggled" from="CanvasLayer/HUD/MuteToggle" to="CanvasLayer/HUD/MuteToggle" method="_on_toggled"]

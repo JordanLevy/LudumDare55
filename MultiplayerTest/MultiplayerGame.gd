@@ -39,6 +39,7 @@ func add_player(peer_id):
 	player.position = Vector2.ZERO
 	GameManager.num_players += 1
 	add_child(player)
+	print(get_children())
 	if player.is_multiplayer_authority():
 		player.id = 1
 		player.health_changed.connect(update_health_bar)

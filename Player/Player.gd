@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 signal health_changed(health_value)
 
 @onready var anim_player = $AnimationPlayer
@@ -15,6 +17,8 @@ var mouse_position: Vector2 = Vector2.ZERO
 var prev_joystick_position: Vector2 = Vector2.ZERO
 
 var is_in_hitstun: bool = false;
+
+const PASSIVE_FORCE = 600
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -108,3 +112,10 @@ func _on_animation_player_animation_finished(anim_name):
 		anim_player.play("idle")
 	if anim_name == "special":
 		anim_player.play("idle")
+
+func _on_passive_hitbox_body_entered(body):
+	if not body is Player:
+		return
+	if body.id == id:
+		return
+	body.velocity = (body.position - position).normalized() * PASSIVE_FORCE

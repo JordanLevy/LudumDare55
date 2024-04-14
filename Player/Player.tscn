@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b7sbw33fnm4er"]
+[gd_scene load_steps=11 format=3 uid="uid://b7sbw33fnm4er"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_6hnr4"]
 [ext_resource type="Texture2D" uid="uid://b01t4fcycn1no" path="res://icon.svg" id="2_plmir"]
@@ -37,6 +37,10 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_mqkhi"]
 radius = 32.0624
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w3npk"]
+radius = 12.0
+height = 32.0
+
 [node name="Player" type="CharacterBody2D"]
 show_behind_parent = true
 collision_mask = 0
@@ -56,3 +60,11 @@ libraries = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_mqkhi")
+
+[node name="PassiveHitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PassiveHitbox"]
+position = Vector2(16, 0)
+shape = SubResource("CapsuleShape2D_w3npk")
+
+[connection signal="body_entered" from="PassiveHitbox" to="." method="_on_passive_hitbox_body_entered"]

@@ -1,6 +1,10 @@
 res://Player/Player.tscn
 res://Arena/Pentagram.gd
 res://Arena/Pentagram.tres
+res://Player/Player.gd
 res://GameManager/GameManager.tscn
 res://Candle/Candle.tscn
-res://Player/Player.gd
+res://Camera/Camera.gd
+res://MultiplayerTest/MultiplayerGame.gd
+res://MultiplayerTest/MultiplayerGame.tscn
+res://GameManager/GameManager.gd

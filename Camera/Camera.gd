@@ -18,7 +18,7 @@ func _process(delta):
 
 	# Calculate distance between players
 	var maxDistance = 10
-	if GameManager.players.has(1) and GameManager.players.has(2):
+	if GameManager.players.has(1) and GameManager.players[1] is CharacterBody2D and GameManager.players.has(2) and GameManager.players[2] is CharacterBody2D:
 		maxDistance = GameManager.players[1].global_position.distance_to(GameManager.players[2].global_position)
 
 	# Smoothly move camera towards the center position
