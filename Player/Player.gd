@@ -6,9 +6,9 @@ signal health_changed(health_value)
 
 var id: int = 2
 var health = 100
-const ACCELERATION = 900.0
-const MAX_SPEED = 600.0
-const GROUND_FRICTION = 0.99
+const ACCELERATION = 1800
+const MAX_SPEED = 400
+const FRICTION = 800
 
 var using_gamepad: bool = false
 var mouse_position: Vector2 = Vector2.ZERO
@@ -56,10 +56,15 @@ func _physics_process(delta):
 
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = input_dir.normalized()
-	velocity += direction * ACCELERATION * delta
-	if !is_in_hitstun:
-		velocity *= GROUND_FRICTION
-	velocity = velocity.clamp(Vector2(-MAX_SPEED, -MAX_SPEED), Vector2(MAX_SPEED, MAX_SPEED))
+	
+	if direction == Vector2.ZERO:
+		if velocity.length() > (FRICTION * delta):
+			velocity -= velocity.normalized() * FRICTION * delta
+		else:
+			velocity = Vector2.ZERO
+	else:
+		velocity += direction * ACCELERATION * delta
+		velocity = velocity.limit_length(MAX_SPEED)
 
 	
 	if using_gamepad:
