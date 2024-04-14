@@ -19,6 +19,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 1
 
 [node name="Candle" type="Sprite2D"]
+z_index = 2
 texture_filter = 1
 texture = ExtResource("1_egedu")
 offset = Vector2(2, 0)

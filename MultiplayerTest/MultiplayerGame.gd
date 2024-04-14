@@ -45,6 +45,7 @@ func add_player(peer_id):
 		player.health_changed.emit(player.health)
 	else:
 		player.id = 2
+	GameManager.players[player.id] = player
 	if GameManager.num_players == 2:
 		GameManager.countdown_started.emit()
 

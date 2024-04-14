@@ -11,6 +11,7 @@ static var game_state: GameState = GameState.MENU
 static var num_players: int = 0
 static var timer_end: float = 0
 static var candles_belong_to = [0, 0, 0, 0, 0]
+static var players: Dictionary = {}
 
 const COUNTDOWN_DURATION: int = 3
 const ROUND_DURATION: int = 10
