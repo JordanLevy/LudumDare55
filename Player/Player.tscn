@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://b7sbw33fnm4er"]
+[gd_scene load_steps=13 format=3 uid="uid://b7sbw33fnm4er"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_6hnr4"]
 [ext_resource type="Texture2D" uid="uid://b01t4fcycn1no" path="res://icon.svg" id="2_plmir"]
+[ext_resource type="PackedScene" uid="uid://dsaa6dchmxh6i" path="res://FX/Hit.tscn" id="3_dcvwg"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mfus1"]
 properties/0/path = NodePath(".:position")
@@ -26,11 +27,15 @@ resource_name = "move"
 [sub_resource type="Animation" id="Animation_xivmc"]
 resource_name = "special"
 
+[sub_resource type="Animation" id="Animation_403i2"]
+resource_name = "passive"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_su6xd"]
 _data = {
 "idle": SubResource("Animation_gdc24"),
 "melee": SubResource("Animation_xerif"),
 "move": SubResource("Animation_boy56"),
+"passive": SubResource("Animation_403i2"),
 "special": SubResource("Animation_xivmc")
 }
 
@@ -60,6 +65,9 @@ libraries = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_mqkhi")
+
+[node name="PassiveHitParticles" parent="." instance=ExtResource("3_dcvwg")]
+position = Vector2(30, 0)
 
 [node name="PassiveHitbox" type="Area2D" parent="."]
 

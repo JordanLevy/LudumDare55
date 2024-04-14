@@ -114,6 +114,7 @@ candle_scene = ExtResource("6_3wg2c")
 
 [node name="FloorCanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
+follow_viewport_enabled = true
 
 [node name="TileMap" type="TileMap" parent="FloorCanvasLayer"]
 tile_set = SubResource("TileSet_w3q0n")

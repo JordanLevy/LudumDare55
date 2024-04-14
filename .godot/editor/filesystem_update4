@@ -8,3 +8,5 @@ res://Camera/Camera.gd
 res://MultiplayerTest/MultiplayerGame.gd
 res://MultiplayerTest/MultiplayerGame.tscn
 res://GameManager/GameManager.gd
+res://Candle/Fire.tscn
+res://FX/Hit.tscn

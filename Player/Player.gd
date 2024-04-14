@@ -5,6 +5,7 @@ class_name Player
 signal health_changed(health_value)
 
 @onready var anim_player = $AnimationPlayer
+@onready var passive_hit_particles = $PassiveHitParticles
 
 var id: int = 2
 var health = 100
@@ -98,6 +99,13 @@ func play_special_effects():
 	anim_player.stop()
 	anim_player.play("special")
 	print("special")
+	
+@rpc("call_local")
+func play_passive_effects():
+	anim_player.stop()
+	anim_player.play("passive")
+	passive_hit_particles.restart()
+	passive_hit_particles.emitting = true
 
 @rpc("any_peer")
 func receive_damage():
@@ -112,6 +120,8 @@ func _on_animation_player_animation_finished(anim_name):
 		anim_player.play("idle")
 	if anim_name == "special":
 		anim_player.play("idle")
+	if anim_name == "passive":
+		anim_player.play("idle")
 
 func _on_passive_hitbox_body_entered(body):
 	if not body is Player:
@@ -119,3 +129,6 @@ func _on_passive_hitbox_body_entered(body):
 	if body.id == id:
 		return
 	body.velocity = (body.position - position).normalized() * PASSIVE_FORCE
+	if is_multiplayer_authority():
+		play_passive_effects.rpc()
+	
