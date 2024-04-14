@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://b7sbw33fnm4er"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_6hnr4"]
-[ext_resource type="Texture2D" uid="uid://b01t4fcycn1no" path="res://icon.svg" id="2_plmir"]
+[ext_resource type="Texture2D" uid="uid://dql8po60r8cus" path="res://Player/WizardRed.png" id="2_vtle3"]
 [ext_resource type="PackedScene" uid="uid://dsaa6dchmxh6i" path="res://FX/Hit.tscn" id="3_dcvwg"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mfus1"]
@@ -52,8 +52,7 @@ collision_mask = 0
 script = ExtResource("1_6hnr4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_plmir")
+texture = ExtResource("2_vtle3")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_mfus1")

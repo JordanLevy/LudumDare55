@@ -39,13 +39,14 @@ func add_player(peer_id):
 	player.position = Vector2.ZERO
 	GameManager.num_players += 1
 	add_child(player)
-	print(get_children())
 	if player.is_multiplayer_authority():
 		player.id = 1
+		player.set_texture()
 		player.health_changed.connect(update_health_bar)
 		player.health_changed.emit(player.health)
 	else:
 		player.id = 2
+		player.set_texture()
 	GameManager.players[player.id] = player
 	if GameManager.num_players == 2:
 		GameManager.countdown_started.emit()

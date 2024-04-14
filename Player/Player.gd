@@ -4,6 +4,7 @@ class_name Player
 
 signal health_changed(health_value)
 
+@onready var sprite = $Sprite2D
 @onready var anim_player = $AnimationPlayer
 @onready var passive_hit_particles = $PassiveHitParticles
 
@@ -25,7 +26,14 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
+	set_texture()
 	if not is_multiplayer_authority(): return
+	
+func set_texture():
+	if id == 1:
+		sprite.texture = load("res://Player/WizardRed.png")
+	elif id == 2:
+		sprite.texture = load("res://Player/WizardBlue.png")
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
