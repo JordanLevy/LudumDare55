@@ -14,6 +14,9 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath(".:id")
 properties/2/spawn = true
 properties/2/replication_mode = 2
+properties/3/path = NodePath(".:velocity")
+properties/3/spawn = true
+properties/3/replication_mode = 1
 
 [sub_resource type="Animation" id="Animation_gdc24"]
 resource_name = "idle"
@@ -24,11 +27,11 @@ resource_name = "melee"
 [sub_resource type="Animation" id="Animation_boy56"]
 resource_name = "move"
 
-[sub_resource type="Animation" id="Animation_xivmc"]
-resource_name = "special"
-
 [sub_resource type="Animation" id="Animation_403i2"]
 resource_name = "passive"
+
+[sub_resource type="Animation" id="Animation_xivmc"]
+resource_name = "special"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_su6xd"]
 _data = {
@@ -40,11 +43,11 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mqkhi"]
-radius = 32.0624
+radius = 39.2046
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w3npk"]
-radius = 12.0
-height = 32.0
+radius = 13.0
+height = 44.0
 
 [node name="Player" type="CharacterBody2D"]
 show_behind_parent = true
@@ -52,6 +55,7 @@ collision_mask = 0
 script = ExtResource("1_6hnr4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -11)
 texture = ExtResource("2_vtle3")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -66,12 +70,13 @@ libraries = {
 shape = SubResource("CircleShape2D_mqkhi")
 
 [node name="PassiveHitParticles" parent="." instance=ExtResource("3_dcvwg")]
-position = Vector2(30, 0)
+position = Vector2(1, 39)
 
 [node name="PassiveHitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PassiveHitbox"]
-position = Vector2(16, 0)
+position = Vector2(0, 15)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_w3npk")
 
 [connection signal="body_entered" from="PassiveHitbox" to="." method="_on_passive_hitbox_body_entered"]

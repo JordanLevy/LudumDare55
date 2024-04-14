@@ -17,10 +17,12 @@ const FRICTION = 800
 var using_gamepad: bool = false
 var mouse_position: Vector2 = Vector2.ZERO
 var prev_joystick_position: Vector2 = Vector2.ZERO
+var mouse_offset_angle = -PI/2
 
 var is_in_hitstun: bool = false;
 
-const PASSIVE_FORCE = 600
+const PASSIVE_FORCE = 450
+const PASSIVE_FORCE_TRANSFERRED = 1.2
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -48,7 +50,7 @@ func _unhandled_input(event):
 		using_gamepad = false
 	elif event is InputEventMouseMotion:
 		using_gamepad = false
-		mouse_position = event.position - get_viewport_rect().size / 2
+		mouse_position = get_global_mouse_position()
 	
 	if Input.is_action_just_pressed("melee") and !is_attacking():
 		play_melee_effects.rpc()
@@ -85,7 +87,7 @@ func _physics_process(delta):
 			prev_joystick_position = input_dir
 		rotation = atan2(prev_joystick_position.y, prev_joystick_position.x)
 	else:
-		rotation = atan2(mouse_position.y - position.y, mouse_position.x - position.x)
+		rotation = mouse_offset_angle + atan2(mouse_position.y - global_position.y, mouse_position.x - global_position.x)
 
 	if anim_player.current_animation == "melee":
 		pass
@@ -136,7 +138,9 @@ func _on_passive_hitbox_body_entered(body):
 		return
 	if body.id == id:
 		return
-	body.velocity = (body.position - position).normalized() * PASSIVE_FORCE
+	var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
+	print(force_imparted)
+	body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
 	if is_multiplayer_authority():
 		play_passive_effects.rpc()
 	
