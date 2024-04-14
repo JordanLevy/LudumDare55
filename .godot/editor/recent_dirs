@@ -1,5 +1,6 @@
-res://Camera
 res://GameManager
+res://UI/MuteToggle
+res://Camera
 res://Clock
 res://MultiplayerTest
 res://Candle

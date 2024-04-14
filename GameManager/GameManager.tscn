@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cc0sid3j03x6v"]
+[gd_scene load_steps=5 format=3 uid="uid://cc0sid3j03x6v"]
 
 [ext_resource type="Script" path="res://GameManager/GameManager.gd" id="1_2pwom"]
+[ext_resource type="AudioStream" uid="uid://bgdt7wfsbu3bj" path="res://Sounds/RitualMusic.mp3" id="2_4r1te"]
+[ext_resource type="Script" path="res://GameManager/AudioStreamPlayer.gd" id="3_rj868"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tv364"]
 properties/0/path = NodePath(".:game_state")
@@ -21,3 +23,8 @@ script = ExtResource("1_2pwom")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_tv364")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_4r1te")
+autoplay = true
+script = ExtResource("3_rj868")

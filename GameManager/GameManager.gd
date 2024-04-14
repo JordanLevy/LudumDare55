@@ -21,6 +21,8 @@ signal countdown_started
 signal round_started
 signal round_ended
 
+signal mute_toggled
+
 
 func _ready():
 	countdown_started.connect(_on_countdown_start)
