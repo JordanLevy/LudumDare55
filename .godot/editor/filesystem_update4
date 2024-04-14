@@ -8,3 +8,5 @@ res://FX/Hit.tscn
 res://Candle/Fire.tscn
 res://Player/Player.gd
 res://Camera/Camera.gd
+res://Shield/Shield.tscn
+res://Shield/Shield.gdshader

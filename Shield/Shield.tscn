@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://dgdd7oh6hp77x"]
+
+[ext_resource type="Texture2D" uid="uid://cbwe8hrbb0vo5" path="res://Shield/Shield.png" id="1_iapex"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_mxcjt"]
+
+[sub_resource type="VisualShader" id="VisualShader_lleqq"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+
+
+"
+graph_offset = Vector2(-85.843, -34.0346)
+mode = 1
+flags/light_only = false
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_mxcjt")
+nodes/fragment/2/position = Vector2(20, 180)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_no7pc"]
+shader = SubResource("VisualShader_lleqq")
+
+[sub_resource type="Curve" id="Curve_bu517"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.117187, 1), 0.0, 0.0, 0, 0, Vector2(0.800781, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_5ehgc"]
+curve = SubResource("Curve_bu517")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n0vwp"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 2.2
+scale_max = 2.2
+scale_curve = SubResource("CurveTexture_5ehgc")
+
+[node name="Shield" type="GPUParticles2D"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_no7pc")
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_n0vwp")
+texture = ExtResource("1_iapex")
+lifetime = 2.0

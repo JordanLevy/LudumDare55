@@ -2,7 +2,7 @@
 
 [sub_resource type="Gradient" id="Gradient_lsb70"]
 offsets = PackedFloat32Array(0, 0.483204, 1)
-colors = PackedColorArray(1, 0.870588, 1, 1, 0.698039, 0.321569, 0.521569, 1, 1, 0, 0.160784, 0)
+colors = PackedColorArray(30.769, 0.871, 15.385, 1, 0.698039, 0.321569, 0.521569, 1, 1, 0, 0.160784, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_52ru1"]
 gradient = SubResource("Gradient_lsb70")
@@ -23,8 +23,8 @@ emission_ring_radius = 3.0
 emission_ring_inner_radius = 3.0
 spread = 180.0
 flatness = 0.56
-initial_velocity_min = 147.89
-initial_velocity_max = 147.89
+initial_velocity_min = 316.9
+initial_velocity_max = 316.9
 gravity = Vector3(0, 0, 0)
 scale_min = 4.0
 scale_max = 6.0
@@ -36,7 +36,7 @@ turbulence_noise_speed = Vector3(0.5, 0.5, 0.5)
 
 [node name="Hit" type="GPUParticles2D"]
 emitting = false
-amount = 20
+amount = 30
 process_material = SubResource("ParticleProcessMaterial_xxs8w")
 lifetime = 0.1
 one_shot = true

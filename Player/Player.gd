@@ -7,6 +7,9 @@ signal health_changed(health_value)
 @onready var sprite = $Sprite2D
 @onready var anim_player = $AnimationPlayer
 @onready var passive_hit_particles = $PassiveHitParticles
+@onready var shield = $Shield
+
+var is_shielding = false
 
 var id: int = 2
 var health = 100
@@ -17,7 +20,7 @@ const FRICTION = 800
 var using_gamepad: bool = false
 var mouse_position: Vector2 = Vector2.ZERO
 var prev_joystick_position: Vector2 = Vector2.ZERO
-var mouse_offset_angle = -PI/2
+var rotation_offset = -PI/2
 
 var is_in_hitstun: bool = false;
 
@@ -59,12 +62,18 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("special") and !is_attacking():
 		play_special_effects.rpc()
 		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+		
+	if Input.is_action_just_pressed("shield") and !is_attacking():
+		play_shield_effects.rpc()
+		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 func is_attacking():
 	return anim_player.current_animation == "melee" or anim_player.current_animation == "special"
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
+	
+	print(anim_player.current_animation)
 	
 	#if GameManager.game_state != GameManager.GameState.PLAYING:
 		#return
@@ -85,11 +94,15 @@ func _physics_process(delta):
 	if using_gamepad:
 		if input_dir.length_squared() > 0.5:
 			prev_joystick_position = input_dir
-		rotation = atan2(prev_joystick_position.y, prev_joystick_position.x)
+		rotation = rotation_offset + atan2(prev_joystick_position.y, prev_joystick_position.x)
 	else:
-		rotation = mouse_offset_angle + atan2(mouse_position.y - global_position.y, mouse_position.x - global_position.x)
+		rotation = rotation_offset + atan2(mouse_position.y - global_position.y, mouse_position.x - global_position.x)
 
 	if anim_player.current_animation == "melee":
+		pass
+	elif anim_player.current_animation == "special":
+		pass
+	elif anim_player.current_animation == "shield":
 		pass
 	elif input_dir != Vector2.ZERO:
 		anim_player.play("move")
@@ -108,21 +121,26 @@ func _physics_process(delta):
 		global_position.y -= height * 2
 	elif global_position.y < -height:
 		global_position.y += height * 2
-	
 
-	move_and_slide()
+	if !is_shielding:
+		move_and_slide()
 
 @rpc("call_local")
 func play_melee_effects():
 	anim_player.stop()
 	anim_player.play("melee")
-	print("melee")
 	
 @rpc("call_local")
 func play_special_effects():
 	anim_player.stop()
 	anim_player.play("special")
-	print("special")
+	
+@rpc("call_local")
+func play_shield_effects():
+	anim_player.stop()
+	anim_player.play("shield")
+	is_shielding = true
+	shield.visible = true
 	
 @rpc("call_local")
 func play_passive_effects():
@@ -140,11 +158,16 @@ func receive_damage():
 	health_changed.emit(health)
 
 func _on_animation_player_animation_finished(anim_name):
+	print(anim_name, 'finished')
 	if anim_name == "melee":
 		anim_player.play("idle")
 	if anim_name == "special":
 		anim_player.play("idle")
 	if anim_name == "passive":
+		anim_player.play("idle")
+	if anim_name == "shield":
+		is_shielding = false
+		shield.visible = false
 		anim_player.play("idle")
 
 func _on_passive_hitbox_body_entered(body):
@@ -153,7 +176,6 @@ func _on_passive_hitbox_body_entered(body):
 	if body.id == id:
 		return
 	var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
-	print(force_imparted)
 	body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
 	if is_multiplayer_authority():
 		play_passive_effects.rpc()
