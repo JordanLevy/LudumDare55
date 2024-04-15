@@ -9,6 +9,7 @@ signal health_changed(health_value)
 @onready var passive_hit_particles = $PassiveHitParticles
 @onready var parry_particles = $ParryParticles
 @onready var shield_node = $Shield
+@export var barrier_scene: PackedScene
 
 @export var id: int = 2
 var health = 100
@@ -26,6 +27,9 @@ var is_in_hitstun: bool = false;
 const PASSIVE_FORCE = 450
 const PASSIVE_FORCE_TRANSFERRED = 1.2
 
+var last_barrier_point = Vector2.ZERO
+var barrier: Node2D
+
 var melee = 'melee'
 var special = 'special'
 var shield = 'shield'
@@ -39,11 +43,38 @@ func _enter_tree():
 	if GameManager.is_online:
 		set_multiplayer_authority(str(name).to_int())
 
+@rpc("call_local")
+func create_barrier():
+	if barrier != null:
+		barrier.queue_free()
+	barrier = barrier_scene.instantiate()
+	if id == 1:
+		barrier.default_collision_layer = 3
+		barrier.default_collision_mask = 2
+		barrier.modulate = Color(1, 0, 0, 1)
+	elif id == 2:
+		barrier.default_collision_layer = 4
+		barrier.default_collision_mask = 1
+		barrier.modulate = Color(0, 0, 1, 1)
+	get_tree().get_root().add_child(barrier)
+	barrier.add_point_to_line(global_position)
+	barrier.add_point_to_line(global_position)
+
+@rpc("call_local")
+func update_barrier():
+	if barrier != null:
+		barrier.update_last_point(global_position)
+		
+@rpc("call_local")
+func release_barrier():
+	barrier.drawing = false
+
 func _ready():
 	GameManager.controls_changed.connect(_on_controls_changed)
 	GameManager.controls_changed.emit(0)
 	set_texture()
 	set_start_position()
+	set_layers()
 	GameManager.players[id] = self
 	if GameManager.is_online and not is_multiplayer_authority(): return
 
@@ -76,11 +107,23 @@ func set_texture():
 
 func set_start_position():
 	if id == 1:
-		position = Vector2(0, -400)
+		position = Vector2(0, -500)
 	elif id == 2:
-		position = Vector2(0, 400)
+		position = Vector2(0, 500)
 		
 
+func set_layers():
+	if id == 1:
+		set_collision_layer_value(1, true)
+		set_collision_mask_value(4, true)
+		$PassiveHitbox.set_collision_layer_value(3, true)
+		$PassiveHitbox.set_collision_mask_value(2, true)
+	elif id == 2:
+		set_collision_layer_value(2, true)
+		set_collision_mask_value(3, true)
+		$PassiveHitbox.set_collision_layer_value(4, true)
+		$PassiveHitbox.set_collision_mask_value(1, true)
+		
 func _unhandled_input(event):
 	if GameManager.is_online and not is_multiplayer_authority(): return
 	
@@ -90,7 +133,8 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed(pause):
 		get_tree().quit()
 	
-	if Input.is_action_just_pressed(melee) and !is_attacking():
+	#temporarily disabling barrier in online because it doesn't work
+	if Input.is_action_just_pressed(melee) and !is_attacking() and not GameManager.is_online:
 		play_melee_effects.rpc()
 		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 		
@@ -103,11 +147,12 @@ func _unhandled_input(event):
 		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 func is_attacking():
-	return anim_player.current_animation == "melee" or anim_player.current_animation == "special"
+	return anim_player.current_animation == "special"
 
 func _physics_process(delta):
 	if GameManager.is_online and not is_multiplayer_authority(): return
 	
+	update_barrier.rpc()
 	#print(anim_player.current_animation)
 	
 	#if GameManager.game_state != GameManager.GameState.PLAYING:
@@ -160,12 +205,16 @@ func _physics_process(delta):
 		global_position.y += height * 2
 
 	if !anim_player.current_animation == "shield":
-		move_and_slide()
+		var collision_info = move_and_collide(velocity * delta)
+		if collision_info:
+			velocity = velocity.bounce(collision_info.get_normal())
 
 @rpc("call_local")
 func play_melee_effects():
 	anim_player.stop()
 	anim_player.play("melee")
+	print("createbarrier")
+	create_barrier.rpc()
 	
 @rpc("call_local")
 func play_special_effects():

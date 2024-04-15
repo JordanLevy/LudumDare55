@@ -1,6 +1,6 @@
 extends Camera2D
 
-var minZoom : float = 0.6
+var minZoom : float = 0.5
 var maxZoom : float = 1
 var zoomSpeed : float = 0.05
 var panSpeed: float = 0.05

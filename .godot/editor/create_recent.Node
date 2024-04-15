@@ -1,3 +1,10 @@
+MultiplayerSynchronizer
+Line2D
+StaticBody2D
+RigidBody2D
+CollisionShape2D
+ShapeCast2D
+GPUParticles2D
 HBoxContainer
 TextureRect
 TextureButton
@@ -5,10 +12,4 @@ Button
 Label
 TextEdit
 MarginContainer
-GPUParticles2D
 AnimationPlayer
-Sprite2D
-Node2D
-MultiplayerSynchronizer
-Camera2D
-Player

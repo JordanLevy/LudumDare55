@@ -17,7 +17,7 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 properties/2/path = NodePath(".:id")
 properties/2/spawn = true
-properties/2/replication_mode = 1
+properties/2/replication_mode = 2
 properties/3/path = NodePath(".:velocity")
 properties/3/spawn = true
 properties/3/replication_mode = 1
@@ -27,12 +27,6 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath("Shield:visible")
 properties/5/spawn = true
 properties/5/replication_mode = 1
-properties/6/path = NodePath(".:collision_layer")
-properties/6/spawn = true
-properties/6/replication_mode = 1
-properties/7/path = NodePath(".:collision_mask")
-properties/7/spawn = true
-properties/7/replication_mode = 1
 
 [sub_resource type="Animation" id="Animation_gdc24"]
 resource_name = "idle"
@@ -90,10 +84,10 @@ shader_parameter/distortionTexture = SubResource("NoiseTexture2D_kokbh")
 
 [node name="Player" type="CharacterBody2D"]
 show_behind_parent = true
-collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_6hnr4")
 barrier_scene = ExtResource("7_y6eje")
+id = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -116,8 +110,6 @@ shape = SubResource("CircleShape2D_mqkhi")
 position = Vector2(0, 64)
 
 [node name="PassiveHitbox" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PassiveHitbox"]
 position = Vector2(0, 29)
@@ -133,5 +125,9 @@ texture = ExtResource("5_lf5yg")
 
 [node name="ParryParticles" parent="." instance=ExtResource("6_q3vur")]
 
+[node name="Barrier" parent="." instance=ExtResource("7_y6eje")]
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="PassiveHitbox" to="." method="_on_passive_hitbox_body_entered"]
+
+[editable path="Barrier"]

@@ -1,6 +1,6 @@
 extends Line2D
 
-@export var radius = 280
+@export var radius = 400
 @export var candle_scene: PackedScene
 @onready var label = $Label
 
@@ -38,14 +38,14 @@ func _ready():
 func all_players_inside_circle(players: Dictionary):
 	var players_list = players.values()
 	for player in players_list:
-		if player.position.length() > radius - 50:
+		if player.position.length() > radius:
 			return false
 	return true
 	
 func all_players_outside_circle(players: Dictionary):
 	var players_list = players.values()
 	for player in players_list:
-		if player.position.length() < radius + 50:
+		if player.position.length() < radius:
 			return false
 	return true
 

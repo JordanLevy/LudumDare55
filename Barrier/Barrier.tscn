@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdt60chy30gko"]
+
+[ext_resource type="Script" path="res://Barrier/Barrier.gd" id="1_4ev3x"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p4r1g"]
+properties/0/path = NodePath("Line2D:points")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:default_collision_layer")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:default_collision_mask")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:collision_layer")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:collision_mask")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Barrier:drawing")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[node name="Barrier" type="StaticBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_4ev3x")
+
+[node name="Line2D" type="Line2D" parent="."]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_p4r1g")

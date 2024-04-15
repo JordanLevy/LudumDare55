@@ -44,17 +44,17 @@ func add_player(peer_id):
 	player.position = Vector2.ZERO
 	GameManager.num_players += 1
 	add_child(player)
-	if player.is_multiplayer_authority():
+	if player.name == '1':
 		player.id = 1
-		player.set_texture()
-		player.set_start_position()
+	else:
+		player.id = 2
+	player.set_texture()
+	player.set_start_position()
+	player.set_layers()
+	if player.is_multiplayer_authority():
 		GameManager.waiting_for_opponent.emit()
 		player.health_changed.connect(update_health_bar)
 		player.health_changed.emit(player.health)
-	else:
-		player.id = 2
-		player.set_texture()
-		player.set_start_position()
 	GameManager.players[player.id] = player
 	if GameManager.num_players == 2:
 		GameManager.pre_round_started.emit()
