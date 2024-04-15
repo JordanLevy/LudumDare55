@@ -1,15 +1,12 @@
 res://Player/Player.tscn
 res://Arena/Pentagram.gd
+res://Shield/Shield.gdshader
 res://Arena/Pentagram.tres
+res://Player/Player.gd
 res://GameManager/GameManager.tscn
 res://MultiplayerTest/MultiplayerGame.tscn
 res://Candle/Candle.tscn
 res://FX/Hit.tscn
 res://Candle/Fire.tscn
-res://Player/Player.gd
-res://Camera/Camera.gd
 res://Shield/Shield.tscn
-res://Shield/Shield.gdshader
-res://MultiplayerTest/MultiplayerGame.gd
 res://Shield/Parry.tscn
-res://GameManager/GameManager.gd

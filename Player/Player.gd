@@ -98,15 +98,17 @@ func _physics_process(delta):
 		rotation = rotation_offset + atan2(mouse_position.y - global_position.y, mouse_position.x - global_position.x)
 
 	if anim_player.current_animation == "melee":
-		pass
+		shield.visible = false
 	elif anim_player.current_animation == "special":
-		pass
+		shield.visible = false
 	elif anim_player.current_animation == "shield":
 		pass
 	elif input_dir != Vector2.ZERO:
 		anim_player.play("move")
+		shield.visible = false
 	else:
 		anim_player.play("idle")
+		shield.visible = false
 		
 	var viewport_size = get_viewport_rect().size
 	var width = viewport_size.x

@@ -22,7 +22,7 @@ properties/3/spawn = true
 properties/3/replication_mode = 1
 properties/4/path = NodePath("AnimationPlayer:current_animation")
 properties/4/spawn = true
-properties/4/replication_mode = 2
+properties/4/replication_mode = 1
 
 [sub_resource type="Animation" id="Animation_gdc24"]
 resource_name = "idle"
@@ -35,17 +35,17 @@ resource_name = "melee"
 resource_name = "move"
 loop_mode = 1
 
+[sub_resource type="Animation" id="Animation_4ugsm"]
+resource_name = "parry"
+
 [sub_resource type="Animation" id="Animation_403i2"]
 resource_name = "passive"
-
-[sub_resource type="Animation" id="Animation_xivmc"]
-resource_name = "special"
 
 [sub_resource type="Animation" id="Animation_ix2hg"]
 resource_name = "shield"
 
-[sub_resource type="Animation" id="Animation_4ugsm"]
-resource_name = "parry"
+[sub_resource type="Animation" id="Animation_xivmc"]
+resource_name = "special"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_su6xd"]
 _data = {
