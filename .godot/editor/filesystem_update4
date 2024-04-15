@@ -5,3 +5,8 @@ res://Arena/Pentagram.tres
 res://Player/Player.gd
 res://Player/Player.tscn
 res://MultiplayerTest/MultiplayerGame.gd
+res://GameManager/GameManager.gd
+res://UI/Controls/ControlsToggle.gd
+res://Candle/Candle.gd
+res://GameManager/GameManager.tscn
+res://Camera/Camera.gd

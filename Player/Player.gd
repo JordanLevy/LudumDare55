@@ -11,7 +11,6 @@ signal health_changed(health_value)
 @onready var shield_node = $Shield
 
 @export var id: int = 2
-@export var is_online = true
 var health = 100
 const ACCELERATION = 1800
 const MAX_SPEED = 400
@@ -27,16 +26,48 @@ var is_in_hitstun: bool = false;
 const PASSIVE_FORCE = 450
 const PASSIVE_FORCE_TRANSFERRED = 1.2
 
+var melee = 'melee'
+var special = 'special'
+var shield = 'shield'
+var left = 'left'
+var right = 'right'
+var up = 'up'
+var down = 'down'
+var pause = 'pause'
+
 func _enter_tree():
-	if is_online:
+	if GameManager.is_online:
 		set_multiplayer_authority(str(name).to_int())
 
 func _ready():
+	GameManager.controls_changed.connect(_on_controls_changed)
+	GameManager.controls_changed.emit(0)
 	set_texture()
 	set_start_position()
 	GameManager.players[id] = self
-	if not is_multiplayer_authority(): return
-	
+	if GameManager.is_online and not is_multiplayer_authority(): return
+
+func _on_controls_changed(config):
+	var mapping = GameManager.mapping_p1
+	if id == 2:
+		mapping = GameManager.mapping_p2
+	var value = mapping[GameManager.controls]
+	if value != '_key':
+		using_gamepad = true
+	else:
+		using_gamepad = false
+	if GameManager.is_online:
+		using_gamepad = false
+		value = '_key'
+	melee = 'melee' + value
+	special = 'special' + value
+	shield = 'shield' + value
+	left = 'left' + value
+	right = 'right' + value
+	up = 'up' + value
+	down = 'down' + value
+	pause = 'pause' + value
+
 func set_texture():
 	if id == 1:
 		sprite.texture = load("res://Player/WizardRed.png")
@@ -51,29 +82,23 @@ func set_start_position():
 		
 
 func _unhandled_input(event):
-	if is_online and not is_multiplayer_authority(): return
+	if GameManager.is_online and not is_multiplayer_authority(): return
 	
-	if(event is InputEventJoypadButton):
-		using_gamepad = true
-	elif(event is InputEventJoypadMotion):
-		using_gamepad = true
-	elif(event is InputEventKey):
-		using_gamepad = false
-	elif(event is InputEventMouseButton):
-		using_gamepad = false
-	elif event is InputEventMouseMotion:
-		using_gamepad = false
+	if event is InputEventMouseMotion:
 		mouse_position = get_global_mouse_position()
 	
-	if Input.is_action_just_pressed("melee") and !is_attacking():
+	if Input.is_action_just_pressed(pause):
+		get_tree().quit()
+	
+	if Input.is_action_just_pressed(melee) and !is_attacking():
 		play_melee_effects.rpc()
 		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 		
-	if Input.is_action_just_pressed("special") and !is_attacking():
+	if Input.is_action_just_pressed(special) and !is_attacking():
 		play_special_effects.rpc()
 		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 		
-	if Input.is_action_just_pressed("shield") and !is_attacking():
+	if Input.is_action_just_pressed(shield) and !is_attacking():
 		play_shield_effects.rpc()
 		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
@@ -81,14 +106,14 @@ func is_attacking():
 	return anim_player.current_animation == "melee" or anim_player.current_animation == "special"
 
 func _physics_process(delta):
-	if is_online and not is_multiplayer_authority(): return
+	if GameManager.is_online and not is_multiplayer_authority(): return
 	
 	#print(anim_player.current_animation)
 	
 	#if GameManager.game_state != GameManager.GameState.PLAYING:
 		#return
 
-	var input_dir = Input.get_vector("left", "right", "up", "down")
+	var input_dir = Input.get_vector(left, right, up, down)
 	var direction = input_dir.normalized()
 	
 	if direction == Vector2.ZERO:
@@ -160,7 +185,28 @@ func play_parry_effects():
 	shield_node.visible = false
 	parry_particles.restart()
 	GameManager.hitlag(0.05, 1.0)
+	var candle_id = get_available_candle()
+	if candle_id >= 0:
+		GameManager.candle_lit.emit(candle_id, id, true)
 	parry_particles.emitting = true
+	
+func get_available_candle():
+	var result = -1
+	for i in range(GameManager.candles_belong_to.size()):
+		#candle already belongs to this player
+		if GameManager.candles_belong_to[i] == id:
+			continue
+		#light a neutral candle if you can
+		elif GameManager.candles_belong_to[i] == 0:
+			return i
+		#only take a contested candle if there's nothing else
+		elif GameManager.candles_belong_to[i] == -1:
+			if result == -1:
+				result = i
+		#belongs to opponent is better than contested
+		else:
+			result = i
+	return result
 	
 @rpc("call_local")
 func play_passive_effects():
@@ -196,14 +242,14 @@ func _on_passive_hitbox_body_entered(body):
 		return
 	if body.anim_player.current_animation == "shield":
 		print("player", id, " got parried")
-		if is_online and not is_multiplayer_authority():
+		if GameManager.is_online and not is_multiplayer_authority():
 			body.play_parry_effects.rpc()
 		else:
 			body.play_parry_effects()
 	else:
 		var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
 		body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
-		if is_online and is_multiplayer_authority():
+		if GameManager.is_online and is_multiplayer_authority():
 			play_passive_effects.rpc()
 		else:
 			play_passive_effects()

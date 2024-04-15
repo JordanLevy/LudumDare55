@@ -10,10 +10,6 @@ extends Node
 const PORT = 9999
 var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
-
-func _unhandled_input(event):
-	if Input.is_action_just_pressed("pause"):
-		get_tree().quit()
 		
 func _ready():
 	pass
@@ -102,5 +98,7 @@ func upnp_setup():
 
 
 func _on_local_pressed():
+	GameManager.is_online = false
 	get_tree().get_root().add_child(local_game_scene.instantiate())
 	get_tree().get_root().remove_child(get_tree().get_root().get_node("MultiplayerGame"))
+	GameManager.pre_round_started.emit()

@@ -1,7 +1,9 @@
+HBoxContainer
+TextureRect
+TextureButton
+Button
 Label
 TextEdit
-TextureRect
-HBoxContainer
 MarginContainer
 GPUParticles2D
 AnimationPlayer
@@ -10,6 +12,3 @@ Node2D
 MultiplayerSynchronizer
 Camera2D
 Player
-RemoteTransform2D
-CollisionShape2D
-Area2D

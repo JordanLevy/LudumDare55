@@ -67,7 +67,7 @@ func _on_waiting_for_opponent():
 
 func _on_pre_round_started():
 	for candle in candles:
-		candle.set_belongs_to(0, false)
+		GameManager.candle_lit.emit(candle.id, 0, false)
 	self_modulate = Color(1, 1, 1, 1)
 	label.self_modulate = Color(1, 1, 1, 1)
 	label.text = "Both players must stand in the circle to begin the ritual"
@@ -77,7 +77,7 @@ func _on_round_started():
 
 func _on_post_round_started(winner: int):
 	for candle in candles:
-		candle.set_belongs_to(winner, false)
+		GameManager.candle_lit.emit(candle.id, winner, false)
 	if winner == 1:
 		self_modulate = Color(255, 0, 0)
 		label.self_modulate = Color(255, 0, 0)
