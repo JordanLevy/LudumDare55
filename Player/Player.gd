@@ -10,7 +10,8 @@ signal health_changed(health_value)
 @onready var parry_particles = $ParryParticles
 @onready var shield = $Shield
 
-var id: int = 2
+@export var id: int = 2
+@export var is_online = true
 var health = 100
 const ACCELERATION = 1800
 const MAX_SPEED = 400
@@ -27,12 +28,14 @@ const PASSIVE_FORCE = 450
 const PASSIVE_FORCE_TRANSFERRED = 1.2
 
 func _enter_tree():
-	set_multiplayer_authority(str(name).to_int())
+	if is_online:
+		set_multiplayer_authority(str(name).to_int())
 
 func _ready():
+	GameManager.players[id] = self
 	set_texture()
 	set_start_position()
-	if not is_multiplayer_authority(): return
+	if is_online and not is_multiplayer_authority(): return
 	
 func set_texture():
 	if id == 1:
@@ -48,7 +51,7 @@ func set_start_position():
 		
 
 func _unhandled_input(event):
-	if not is_multiplayer_authority(): return
+	if is_online and not is_multiplayer_authority(): return
 	
 	if(event is InputEventJoypadButton):
 		using_gamepad = true
@@ -62,32 +65,65 @@ func _unhandled_input(event):
 		using_gamepad = false
 		mouse_position = get_global_mouse_position()
 	
-	if Input.is_action_just_pressed("melee") and !is_attacking():
-		play_melee_effects.rpc()
-		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-		
-	if Input.is_action_just_pressed("special") and !is_attacking():
-		play_special_effects.rpc()
-		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-		
-	if Input.is_action_just_pressed("shield") and !is_attacking():
-		play_shield_effects.rpc()
-		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+	if id == 1:
+		if Input.is_action_just_pressed("melee") and !is_attacking():
+			if is_online:
+				play_melee_effects.rpc()
+			else:
+				play_melee_effects()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+			
+		if Input.is_action_just_pressed("special") and !is_attacking():
+			if is_online:
+				play_special_effects.rpc()
+			else:
+				play_special_effects()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+			
+		if Input.is_action_just_pressed("shield") and !is_attacking():
+			if is_online:
+				play_shield_effects.rpc()
+			else:
+				play_shield_effects()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+	else:
+		if Input.is_action_just_pressed("melee2") and !is_attacking():
+			if is_online:
+				play_melee_effects.rpc()
+			else:
+				play_melee_effects()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+			
+		if Input.is_action_just_pressed("special2") and !is_attacking():
+			if is_online:
+				play_special_effects.rpc()
+			else:
+				play_special_effects()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+			
+		if Input.is_action_just_pressed("shield2") and !is_attacking():
+			if is_online:
+				play_shield_effects.rpc()
+			else:
+				play_shield_effects()
 
 func is_attacking():
 	return anim_player.current_animation == "melee" or anim_player.current_animation == "special"
 
 func _physics_process(delta):
-	if not is_multiplayer_authority(): return
+	if is_online and not is_multiplayer_authority(): return
 	
 	#print(anim_player.current_animation)
 	
 	#if GameManager.game_state != GameManager.GameState.PLAYING:
 		#return
-
-	var input_dir = Input.get_vector("left", "right", "up", "down")
+	var input_dir = Vector2.ZERO
+	if is_online or id == 1:
+		input_dir = Input.get_vector("left", "right", "up", "down")
+	elif id == 2:
+		input_dir = Input.get_vector("left2", "right2", "up2", "down2")
+			
 	var direction = input_dir.normalized()
-	
 	if direction == Vector2.ZERO:
 		if velocity.length() > (FRICTION * delta):
 			velocity -= velocity.normalized() * FRICTION * delta
@@ -98,7 +134,7 @@ func _physics_process(delta):
 		velocity = velocity.limit_length(MAX_SPEED)
 
 	
-	if using_gamepad:
+	if using_gamepad or id == 2:
 		if input_dir.length_squared() > 0.5:
 			prev_joystick_position = input_dir
 		rotation = rotation_offset + atan2(prev_joystick_position.y, prev_joystick_position.x)
@@ -198,6 +234,6 @@ func _on_passive_hitbox_body_entered(body):
 	else:
 		var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
 		body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
-		if is_multiplayer_authority():
+		if is_online and is_multiplayer_authority():
 			play_passive_effects.rpc()
 	

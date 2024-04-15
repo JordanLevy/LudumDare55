@@ -1,4 +1,7 @@
+Player
+Button
 Label
+Container
 TextEdit
 TextureRect
 HBoxContainer
@@ -9,7 +12,3 @@ Sprite2D
 Node2D
 MultiplayerSynchronizer
 Camera2D
-Player
-RemoteTransform2D
-CollisionShape2D
-Area2D

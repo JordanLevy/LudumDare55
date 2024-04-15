@@ -10,3 +10,5 @@ res://Shield/Shield.tscn
 res://Shield/Parry.tscn
 res://MultiplayerTest/MultiplayerGame.gd
 res://GameManager/GameManager.gd
+res://LocalGame/LocalGame.tscn
+res://Player/Player.gd
