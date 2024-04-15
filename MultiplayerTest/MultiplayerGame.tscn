@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cbe4g60utb2c3"]
+[gd_scene load_steps=15 format=3 uid="uid://cbe4g60utb2c3"]
 
 [ext_resource type="Script" path="res://MultiplayerTest/MultiplayerGame.gd" id="1_8e57u"]
 [ext_resource type="PackedScene" uid="uid://b7sbw33fnm4er" path="res://Player/Player.tscn" id="2_qia5a"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://Arena/Pentagram.gd" id="4_r4eg4"]
 [ext_resource type="Script" path="res://UI/MuteToggle/MuteToggle.gd" id="5_3g6op"]
 [ext_resource type="PackedScene" uid="uid://c1ra0mrd25srh" path="res://Candle/Candle.tscn" id="6_3wg2c"]
+[ext_resource type="Texture2D" uid="uid://bkf81iku1b2cq" path="res://UI/Title.png" id="6_380gr"]
 [ext_resource type="Script" path="res://Camera/Camera.gd" id="7_jmwej"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hblx3"]
@@ -38,67 +39,116 @@ spawn_path = NodePath("..")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="MainMenu" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu"]
-layout_mode = 0
-offset_right = 287.0
-offset_bottom = 244.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer"]
-layout_mode = 2
-
-[node name="Host" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Host"
-
-[node name="Join" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Join"
-
-[node name="AddressEntry" type="TextEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "localhost"
-
 [node name="HUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 432.0
-offset_top = 4.0
-offset_right = 472.0
-offset_bottom = 44.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Clock" type="Label" parent="CanvasLayer/HUD"]
-layout_mode = 0
-offset_left = -24.0
-offset_top = 1.0
-offset_right = 174.0
-offset_bottom = 24.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -99.0
+offset_right = 99.0
+offset_bottom = 23.0
+grow_horizontal = 2
 text = "Waiting for other player..."
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer/HUD"]
-layout_mode = 0
-offset_top = 30.0
-offset_right = 151.0
-offset_bottom = 57.0
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.5
+offset_right = 75.5
+offset_bottom = 27.0
+grow_horizontal = 2
 
 [node name="MuteToggle" type="TextureButton" parent="CanvasLayer/HUD"]
-layout_mode = 0
-offset_left = 641.0
-offset_top = 8.0
-offset_right = 705.0
-offset_bottom = 72.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_bottom = 64.0
+grow_horizontal = 0
 toggle_mode = true
 texture_normal = ExtResource("3_rgrgf")
 texture_pressed = ExtResource("4_m28de")
 script = ExtResource("5_3g6op")
+
+[node name="MainMenu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -33.5
+offset_bottom = 33.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Title" type="TextureRect" parent="CanvasLayer/MainMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -315.0
+offset_top = -200.0
+offset_right = 315.0
+offset_bottom = -56.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("6_380gr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -39.0
+offset_right = 22.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+alignment = 1
+
+[node name="Host" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "HOST RITUAL"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+
+[node name="AddressEntry" type="TextEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "localhost"
+
+[node name="Join" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "JOIN RITUAL"
 
 [node name="Pentagram" type="Line2D" parent="."]
 z_index = -1
@@ -128,6 +178,6 @@ script = ExtResource("7_jmwej")
 replication_config = SubResource("SceneReplicationConfig_iic0s")
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="toggled" from="CanvasLayer/HUD/MuteToggle" to="CanvasLayer/HUD/MuteToggle" method="_on_toggled"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/Join" to="." method="_on_join_pressed"]

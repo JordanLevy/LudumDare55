@@ -10,3 +10,4 @@ res://FX/Hit.tscn
 res://Candle/Fire.tscn
 res://Shield/Shield.tscn
 res://Shield/Parry.tscn
+res://MultiplayerTest/MultiplayerGame.gd

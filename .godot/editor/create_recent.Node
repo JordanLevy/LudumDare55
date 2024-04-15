@@ -1,3 +1,6 @@
+TextureRect
+HBoxContainer
+MarginContainer
 GPUParticles2D
 AnimationPlayer
 Sprite2D
@@ -10,5 +13,3 @@ CollisionShape2D
 Area2D
 AudioStreamPlayer
 TextureButton
-WorldEnvironment
-Timer
