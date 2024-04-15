@@ -25,7 +25,6 @@ signal post_round_started
 
 signal mute_toggled
 
-
 func _ready():
 	waiting_for_opponent.connect(_on_waiting_for_opponent)
 	pre_round_started.connect(_on_pre_round_start)

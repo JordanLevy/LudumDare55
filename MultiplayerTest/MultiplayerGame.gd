@@ -1,7 +1,7 @@
 extends Node
 
 @onready var main_menu = $CanvasLayer/MainMenu
-@onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/AddressEntry
+@onready var connection_code = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/ConnectionCode
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
 
@@ -29,7 +29,14 @@ func _on_host_pressed():
 func _on_join_pressed():
 	main_menu.hide()
 	hud.show()
-	peer.create_client(address_entry.text, PORT)
+	var connection_code = connection_code.text
+	var address = 'localhost'
+	if connection_code != 'localhost':
+		var bytes = EncryptionManager.hex_string_to_bytes(connection_code)
+		var decrypted = EncryptionManager.decrypt(bytes, EncryptionManager.key)
+		address = EncryptionManager.buffer_to_string(decrypted).strip_edges(true, true)
+	print('address', address)
+	peer.create_client(address, PORT)
 	multiplayer.multiplayer_peer = peer
 
 func add_player(peer_id):
@@ -81,4 +88,10 @@ func upnp_setup():
 	assert(map_result == UPNP.UPNP_RESULT_SUCCESS, \
 		"UPNP Port Mapping Failed! Error %s" % map_result)
 	
-	print("Success! Join Address: %s" % upnp.query_external_address())
+	var address = upnp.query_external_address()
+	address = EncryptionManager.pad_string(address, 16)
+	print('address', address, ' ', address.length())
+	var encrypted = EncryptionManager.encrypt(address, EncryptionManager.key)
+	var connection_code = EncryptionManager.bytes_to_hex_string(encrypted)
+	DisplayServer.clipboard_set("Join my Ritual Rumble game!\nUse this Ritual ID.\n" + connection_code)
+	print("Success! Join with code: %s" % connection_code)
