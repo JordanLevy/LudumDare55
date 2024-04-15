@@ -10,3 +10,6 @@ res://Player/Player.gd
 res://Camera/Camera.gd
 res://Shield/Shield.tscn
 res://Shield/Shield.gdshader
+res://MultiplayerTest/MultiplayerGame.gd
+res://Shield/Parry.tscn
+res://GameManager/GameManager.gd

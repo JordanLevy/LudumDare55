@@ -7,9 +7,8 @@ signal health_changed(health_value)
 @onready var sprite = $Sprite2D
 @onready var anim_player = $AnimationPlayer
 @onready var passive_hit_particles = $PassiveHitParticles
+@onready var parry_particles = $ParryParticles
 @onready var shield = $Shield
-
-var is_shielding = false
 
 var id: int = 2
 var health = 100
@@ -73,7 +72,7 @@ func is_attacking():
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
 	
-	print(anim_player.current_animation)
+	#print(anim_player.current_animation)
 	
 	#if GameManager.game_state != GameManager.GameState.PLAYING:
 		#return
@@ -122,7 +121,7 @@ func _physics_process(delta):
 	elif global_position.y < -height:
 		global_position.y += height * 2
 
-	if !is_shielding:
+	if !anim_player.current_animation == "shield":
 		move_and_slide()
 
 @rpc("call_local")
@@ -139,8 +138,16 @@ func play_special_effects():
 func play_shield_effects():
 	anim_player.stop()
 	anim_player.play("shield")
-	is_shielding = true
 	shield.visible = true
+	
+@rpc("call_local")
+func play_parry_effects():
+	anim_player.stop()
+	anim_player.play("parry")
+	shield.visible = false
+	parry_particles.restart()
+	parry_particles.emitting = true
+	GameManager.hitlag(0.05, 1.0)
 	
 @rpc("call_local")
 func play_passive_effects():
@@ -158,7 +165,6 @@ func receive_damage():
 	health_changed.emit(health)
 
 func _on_animation_player_animation_finished(anim_name):
-	print(anim_name, 'finished')
 	if anim_name == "melee":
 		anim_player.play("idle")
 	if anim_name == "special":
@@ -166,7 +172,6 @@ func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "passive":
 		anim_player.play("idle")
 	if anim_name == "shield":
-		is_shielding = false
 		shield.visible = false
 		anim_player.play("idle")
 
@@ -175,8 +180,13 @@ func _on_passive_hitbox_body_entered(body):
 		return
 	if body.id == id:
 		return
-	var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
-	body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
-	if is_multiplayer_authority():
-		play_passive_effects.rpc()
+	if body.anim_player.current_animation == "shield":
+		print("player", id, " got parried")
+		if not is_multiplayer_authority():
+			body.play_parry_effects.rpc()
+	else:
+		var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
+		body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
+		if is_multiplayer_authority():
+			play_passive_effects.rpc()
 	

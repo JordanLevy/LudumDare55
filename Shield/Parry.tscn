@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://jlmff4iajioe"]
+
+[ext_resource type="Texture2D" uid="uid://cmnwx34bpf2qd" path="res://Shield/Parry.png" id="1_j4dkv"]
+
+[sub_resource type="Gradient" id="Gradient_ibx2g"]
+offsets = PackedFloat32Array(0, 0.72807, 1)
+colors = PackedColorArray(100, 100, 100, 1, 100, 100, 100, 1, 100, 100, 100, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hl712"]
+gradient = SubResource("Gradient_ibx2g")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hof21"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+spread = 180.0
+initial_velocity_min = 338.03
+initial_velocity_max = 338.03
+gravity = Vector3(0, 0, 0)
+color = Color(1, 1, 0, 1)
+color_ramp = SubResource("GradientTexture1D_hl712")
+
+[node name="Parry" type="GPUParticles2D"]
+emitting = false
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_hof21")
+texture = ExtResource("1_j4dkv")
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+local_coords = true

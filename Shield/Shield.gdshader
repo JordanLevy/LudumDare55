@@ -26,8 +26,3 @@ void fragment() {
     // Multiply the alpha of the texture to draw on top to control its opacity
     COLOR = (screenColor + textureColor) * texture(TEXTURE, UV).a;
 }
-
-//void light() {
-	// Called for every pixel for every light affecting the CanvasItem.
-	// Uncomment to replace the default light processing function with this one.
-//}

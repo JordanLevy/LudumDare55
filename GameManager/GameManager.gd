@@ -38,3 +38,8 @@ func _on_round_start():
 	
 func _on_round_end(winner: int):
 	game_state = GameState.ROUND_OVER
+	
+func hitlag(time_scale, duration):
+	Engine.time_scale = time_scale
+	await(get_tree().create_timer(duration * time_scale).timeout)
+	Engine.time_scale = 1.0
