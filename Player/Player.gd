@@ -8,7 +8,7 @@ signal health_changed(health_value)
 @onready var anim_player = $AnimationPlayer
 @onready var passive_hit_particles = $PassiveHitParticles
 @onready var parry_particles = $ParryParticles
-@onready var shield = $Shield
+@onready var shield_node = $Shield
 
 @export var id: int = 2
 @export var is_online = true
@@ -32,10 +32,10 @@ func _enter_tree():
 		set_multiplayer_authority(str(name).to_int())
 
 func _ready():
-	GameManager.players[id] = self
 	set_texture()
 	set_start_position()
-	if is_online and not is_multiplayer_authority(): return
+	GameManager.players[id] = self
+	if not is_multiplayer_authority(): return
 	
 func set_texture():
 	if id == 1:
@@ -65,47 +65,17 @@ func _unhandled_input(event):
 		using_gamepad = false
 		mouse_position = get_global_mouse_position()
 	
-	if id == 1:
-		if Input.is_action_just_pressed("melee") and !is_attacking():
-			if is_online:
-				play_melee_effects.rpc()
-			else:
-				play_melee_effects()
-			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-			
-		if Input.is_action_just_pressed("special") and !is_attacking():
-			if is_online:
-				play_special_effects.rpc()
-			else:
-				play_special_effects()
-			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-			
-		if Input.is_action_just_pressed("shield") and !is_attacking():
-			if is_online:
-				play_shield_effects.rpc()
-			else:
-				play_shield_effects()
-			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-	else:
-		if Input.is_action_just_pressed("melee2") and !is_attacking():
-			if is_online:
-				play_melee_effects.rpc()
-			else:
-				play_melee_effects()
-			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-			
-		if Input.is_action_just_pressed("special2") and !is_attacking():
-			if is_online:
-				play_special_effects.rpc()
-			else:
-				play_special_effects()
-			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-			
-		if Input.is_action_just_pressed("shield2") and !is_attacking():
-			if is_online:
-				play_shield_effects.rpc()
-			else:
-				play_shield_effects()
+	if Input.is_action_just_pressed("melee") and !is_attacking():
+		play_melee_effects.rpc()
+		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+		
+	if Input.is_action_just_pressed("special") and !is_attacking():
+		play_special_effects.rpc()
+		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+		
+	if Input.is_action_just_pressed("shield") and !is_attacking():
+		play_shield_effects.rpc()
+		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 func is_attacking():
 	return anim_player.current_animation == "melee" or anim_player.current_animation == "special"
@@ -117,13 +87,10 @@ func _physics_process(delta):
 	
 	#if GameManager.game_state != GameManager.GameState.PLAYING:
 		#return
-	var input_dir = Vector2.ZERO
-	if is_online or id == 1:
-		input_dir = Input.get_vector("left", "right", "up", "down")
-	elif id == 2:
-		input_dir = Input.get_vector("left2", "right2", "up2", "down2")
-			
+
+	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = input_dir.normalized()
+	
 	if direction == Vector2.ZERO:
 		if velocity.length() > (FRICTION * delta):
 			velocity -= velocity.normalized() * FRICTION * delta
@@ -134,7 +101,7 @@ func _physics_process(delta):
 		velocity = velocity.limit_length(MAX_SPEED)
 
 	
-	if using_gamepad or id == 2:
+	if using_gamepad:
 		if input_dir.length_squared() > 0.5:
 			prev_joystick_position = input_dir
 		rotation = rotation_offset + atan2(prev_joystick_position.y, prev_joystick_position.x)
@@ -142,17 +109,17 @@ func _physics_process(delta):
 		rotation = rotation_offset + atan2(mouse_position.y - global_position.y, mouse_position.x - global_position.x)
 
 	if anim_player.current_animation == "melee":
-		shield.visible = false
+		shield_node.visible = false
 	elif anim_player.current_animation == "special":
-		shield.visible = false
+		shield_node.visible = false
 	elif anim_player.current_animation == "shield":
 		pass
 	elif input_dir != Vector2.ZERO:
 		anim_player.play("move")
-		shield.visible = false
+		shield_node.visible = false
 	else:
 		anim_player.play("idle")
-		shield.visible = false
+		shield_node.visible = false
 		
 	var viewport_size = get_viewport_rect().size
 	var width = viewport_size.x
@@ -184,13 +151,13 @@ func play_special_effects():
 func play_shield_effects():
 	anim_player.stop()
 	anim_player.play("shield")
-	shield.visible = true
+	shield_node.visible = true
 	
 @rpc("call_local")
 func play_parry_effects():
 	anim_player.stop()
 	anim_player.play("parry")
-	shield.visible = false
+	shield_node.visible = false
 	parry_particles.restart()
 	GameManager.hitlag(0.05, 1.0)
 	parry_particles.emitting = true
@@ -219,7 +186,7 @@ func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "passive":
 		anim_player.play("idle")
 	if anim_name == "shield":
-		shield.visible = false
+		shield_node.visible = false
 		anim_player.play("idle")
 
 func _on_passive_hitbox_body_entered(body):
@@ -229,11 +196,15 @@ func _on_passive_hitbox_body_entered(body):
 		return
 	if body.anim_player.current_animation == "shield":
 		print("player", id, " got parried")
-		if not is_multiplayer_authority():
+		if is_online and not is_multiplayer_authority():
 			body.play_parry_effects.rpc()
+		else:
+			body.play_parry_effects()
 	else:
 		var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
 		body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
 		if is_online and is_multiplayer_authority():
 			play_passive_effects.rpc()
+		else:
+			play_passive_effects()
 	

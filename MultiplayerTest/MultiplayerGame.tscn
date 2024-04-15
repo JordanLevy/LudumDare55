@@ -165,10 +165,10 @@ placeholder_text = "Ritual ID"
 layout_mode = 2
 text = "JOIN RITUAL"
 
-[node name="LocalMultiplayer" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="Local" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "START LOCAL 1v1 RITUAL"
+text = "START LOCAL MULTIPLAYER RITUAL"
 
 [node name="Pentagram" type="Line2D" parent="."]
 z_index = -1
@@ -217,4 +217,4 @@ replication_config = SubResource("SceneReplicationConfig_iic0s")
 [connection signal="toggled" from="CanvasLayer/HUD/MuteToggle" to="CanvasLayer/HUD/MuteToggle" method="_on_toggled"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/LocalMultiplayer" to="." method="_on_local_multiplayer_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Local" to="." method="_on_local_pressed"]

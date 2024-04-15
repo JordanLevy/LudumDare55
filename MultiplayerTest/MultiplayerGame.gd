@@ -5,7 +5,7 @@ extends Node
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
 
-@onready var local_multiplayer_scene = preload("res://LocalGame/LocalGame.tscn")
+@onready var local_game_scene = preload("res://LocalGame/LocalGame.tscn")
 
 const PORT = 9999
 var peer = ENetMultiplayerPeer.new()
@@ -101,7 +101,6 @@ func upnp_setup():
 	print("Success! Join with code: %s" % connection_code)
 
 
-func _on_local_multiplayer_pressed():
-	get_tree().get_root().add_child(local_multiplayer_scene.instantiate())
+func _on_local_pressed():
+	get_tree().get_root().add_child(local_game_scene.instantiate())
 	get_tree().get_root().remove_child(get_tree().get_root().get_node("MultiplayerGame"))
-	GameManager.pre_round_started.emit()
