@@ -148,14 +148,15 @@ func play_parry_effects():
 	anim_player.play("parry")
 	shield.visible = false
 	parry_particles.restart()
-	parry_particles.emitting = true
 	GameManager.hitlag(0.05, 1.0)
+	parry_particles.emitting = true
 	
 @rpc("call_local")
 func play_passive_effects():
 	anim_player.stop()
 	anim_player.play("passive")
 	passive_hit_particles.restart()
+	GameManager.hitlag(0.05, 0.2)
 	passive_hit_particles.emitting = true
 
 @rpc("any_peer")
