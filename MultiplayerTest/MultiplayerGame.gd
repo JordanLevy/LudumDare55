@@ -42,14 +42,17 @@ func add_player(peer_id):
 	if player.is_multiplayer_authority():
 		player.id = 1
 		player.set_texture()
+		player.set_start_position()
+		GameManager.waiting_for_opponent.emit()
 		player.health_changed.connect(update_health_bar)
 		player.health_changed.emit(player.health)
 	else:
 		player.id = 2
 		player.set_texture()
+		player.set_start_position()
 	GameManager.players[player.id] = player
 	if GameManager.num_players == 2:
-		GameManager.countdown_started.emit()
+		GameManager.pre_round_started.emit()
 
 func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))

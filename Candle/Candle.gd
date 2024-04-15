@@ -29,37 +29,44 @@ func all_values_equal(list):
 			return false
 	return true
 
-func set_belongs_to(value):
+func set_belongs_to(value, check_winner):
 	belongs_to = value
 	GameManager.candles_belong_to[id] = value
+	update_fire_color()
+	if not check_winner:
+		return
 	var first = GameManager.candles_belong_to[0]
 	if (first == 1 or first == 2) and all_values_equal(GameManager.candles_belong_to):
-		GameManager.round_ended.emit(first)
+		GameManager.post_round_started.emit(first)
 
 func _on_area_2d_body_entered(body):
+	if GameManager.game_state != GameManager.GameState.ROUND:
+		return
 	if body.id == 1:
 		contested_by_p1 = true
 		if contested_by_p2:
-			set_belongs_to(-1)
+			set_belongs_to(-1, false)
 		else:
-			set_belongs_to(1)
+			set_belongs_to(1, true)
 	elif body.id == 2:
 		contested_by_p2 = true
 		if contested_by_p1:
-			set_belongs_to(-1)
+			set_belongs_to(-1, false)
 		else:
-			set_belongs_to(2)
+			set_belongs_to(2, true)
 	update_fire_color()
 
 func _on_area_2d_body_exited(body):
+	if GameManager.game_state != GameManager.GameState.ROUND:
+		return
 	if body.id == 1:
 		contested_by_p1 = false
 		if contested_by_p2:
-			set_belongs_to(2)
+			set_belongs_to(2, true)
 	elif body.id == 2:
 		contested_by_p2 = false
 		if contested_by_p1:
-			set_belongs_to(1)
+			set_belongs_to(1, true)
 	update_fire_color()
 	
 	

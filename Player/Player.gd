@@ -31,6 +31,7 @@ func _enter_tree():
 
 func _ready():
 	set_texture()
+	set_start_position()
 	if not is_multiplayer_authority(): return
 	
 func set_texture():
@@ -38,6 +39,13 @@ func set_texture():
 		sprite.texture = load("res://Player/WizardRed.png")
 	elif id == 2:
 		sprite.texture = load("res://Player/WizardBlue.png")
+
+func set_start_position():
+	if id == 1:
+		position = Vector2(0, -400)
+	elif id == 2:
+		position = Vector2(0, 400)
+		
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return

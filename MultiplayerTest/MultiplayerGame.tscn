@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cbe4g60utb2c3"]
+[gd_scene load_steps=16 format=3 uid="uid://cbe4g60utb2c3"]
 
 [ext_resource type="Script" path="res://MultiplayerTest/MultiplayerGame.gd" id="1_8e57u"]
 [ext_resource type="PackedScene" uid="uid://b7sbw33fnm4er" path="res://Player/Player.tscn" id="2_qia5a"]
@@ -11,6 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://c1ra0mrd25srh" path="res://Candle/Candle.tscn" id="6_3wg2c"]
 [ext_resource type="Texture2D" uid="uid://bkf81iku1b2cq" path="res://UI/Title.png" id="6_380gr"]
 [ext_resource type="Script" path="res://Camera/Camera.gd" id="7_jmwej"]
+
+[sub_resource type="Theme" id="Theme_swbii"]
+default_font_size = 40
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hblx3"]
 texture = ExtResource("3_sm1g4")
@@ -28,6 +31,15 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("Camera2D:offset")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("Pentagram/Label:text")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("Pentagram/Label:self_modulate")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("Pentagram:self_modulate")
+properties/4/spawn = true
+properties/4/replication_mode = 2
 
 [node name="MultiplayerGame" type="Node2D"]
 script = ExtResource("1_8e57u")
@@ -44,10 +56,13 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1070.0
+offset_bottom = -566.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Clock" type="Label" parent="CanvasLayer/HUD"]
+visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -161,6 +176,22 @@ begin_cap_mode = 2
 end_cap_mode = 2
 script = ExtResource("4_r4eg4")
 candle_scene = ExtResource("6_3wg2c")
+
+[node name="Label" type="Label" parent="Pentagram"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -305.5
+offset_top = -27.5
+offset_right = 305.5
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_swbii")
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="FloorCanvasLayer" type="CanvasLayer" parent="."]
 layer = -1

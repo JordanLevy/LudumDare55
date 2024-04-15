@@ -2,9 +2,10 @@ extends Node
 
 enum GameState {
 	MENU,
-	COUNTDOWN,
-	PLAYING,
-	ROUND_OVER
+	WAITING,
+	PRE_ROUND,
+	ROUND,
+	POST_ROUND
 }
 
 static var game_state: GameState = GameState.MENU
@@ -17,27 +18,31 @@ const COUNTDOWN_DURATION: int = 3
 const ROUND_DURATION: int = 10
 const ROUND_END_DURATION: int = 5
 
-signal countdown_started
+signal waiting_for_opponent
+signal pre_round_started
 signal round_started
-signal round_ended
+signal post_round_started
 
 signal mute_toggled
 
 
 func _ready():
-	countdown_started.connect(_on_countdown_start)
+	waiting_for_opponent.connect(_on_waiting_for_opponent)
+	pre_round_started.connect(_on_pre_round_start)
 	round_started.connect(_on_round_start)
-	round_ended.connect(_on_round_end)
-	
-func _on_countdown_start():
-	timer_end = Time.get_unix_time_from_system() + 3 + 10 + 5
-	game_state = GameState.COUNTDOWN
+	post_round_started.connect(_on_post_round_start)
+
+func _on_waiting_for_opponent():
+	game_state = GameState.WAITING
+
+func _on_pre_round_start():
+	game_state = GameState.PRE_ROUND
 	
 func _on_round_start():
-	game_state = GameState.PLAYING
+	game_state = GameState.ROUND
 	
-func _on_round_end(winner: int):
-	game_state = GameState.ROUND_OVER
+func _on_post_round_start(winner: int):
+	game_state = GameState.POST_ROUND
 	
 func hitlag(time_scale, duration):
 	Engine.time_scale = time_scale
