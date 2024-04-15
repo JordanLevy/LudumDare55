@@ -7,11 +7,14 @@ extends Line2D
 var candles: Array
 var candle_offset = Vector2(0, -10)
 
+var connection_code = ""
+
 func _ready():
 	GameManager.waiting_for_opponent.connect(_on_waiting_for_opponent)
 	GameManager.pre_round_started.connect(_on_pre_round_started)
 	GameManager.round_started.connect(_on_round_started)
 	GameManager.post_round_started.connect(_on_post_round_started)
+	GameManager.connection_code_changed.connect(_on_connection_code_changed)
 	var offset = Vector2.ZERO
 	clear_points()
 	var children = get_children()
@@ -54,8 +57,13 @@ func _process(delta):
 	elif GameManager.game_state == GameManager.GameState.POST_ROUND and all_players_outside_circle(GameManager.players):
 		GameManager.pre_round_started.emit()
 
+func _on_connection_code_changed(code):
+	connection_code = code
+	if GameManager.game_state == GameManager.GameState.WAITING:
+		label.text = "Waiting for opponent to join...\nRitual ID:\n" + connection_code
+
 func _on_waiting_for_opponent():
-	label.text = "Waiting for opponent to join..."
+	label.text = "Waiting for opponent to join...\nRitual ID:\n" + connection_code
 
 func _on_pre_round_started():
 	for candle in candles:

@@ -2,7 +2,6 @@ res://Player/Player.tscn
 res://Arena/Pentagram.gd
 res://Shield/Shield.gdshader
 res://Arena/Pentagram.tres
-res://MultiplayerTest/EncryptionManager.gd
 res://MultiplayerTest/MultiplayerGame.tscn
 res://Candle/Candle.tscn
 res://FX/Hit.tscn
@@ -10,3 +9,4 @@ res://Candle/Fire.tscn
 res://Shield/Shield.tscn
 res://Shield/Parry.tscn
 res://MultiplayerTest/MultiplayerGame.gd
+res://GameManager/GameManager.gd

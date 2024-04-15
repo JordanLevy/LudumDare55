@@ -22,6 +22,7 @@ signal waiting_for_opponent
 signal pre_round_started
 signal round_started
 signal post_round_started
+signal connection_code_changed
 
 signal mute_toggled
 

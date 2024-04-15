@@ -94,5 +94,6 @@ func upnp_setup():
 	var encrypted = EncryptionManager.encrypt(address, EncryptionManager.key)
 	print('encrypted ', encrypted)
 	var connection_code = EncryptionManager.bytes_to_hex_string(encrypted)
-	DisplayServer.clipboard_set("Join my Ritual Rumble game!\nUse this Ritual ID.\n" + connection_code)
+	DisplayServer.clipboard_set(connection_code)
+	GameManager.connection_code_changed.emit(connection_code)
 	print("Success! Join with code: %s" % connection_code)
