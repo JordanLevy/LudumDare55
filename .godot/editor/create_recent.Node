@@ -1,3 +1,5 @@
+AudioStreamPlayer
+AudioStreamPlayer2D
 MultiplayerSynchronizer
 Line2D
 StaticBody2D
@@ -10,6 +12,3 @@ TextureRect
 TextureButton
 Button
 Label
-TextEdit
-MarginContainer
-AnimationPlayer

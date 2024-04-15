@@ -5,6 +5,10 @@ extends TextureButton
 @onready var p1_icon = $TextureRect
 @onready var p2_icon = $TextureRect2
 
+func _ready():
+	p1_icon.self_modulate = Color(0.8, 0, 0, 1)
+	p2_icon.self_modulate = Color(0, 0.2, 0.8, 1)
+
 func _on_pressed():
 	var new_controls = GameManager.controls + 1
 	if new_controls >= 3:

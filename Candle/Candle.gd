@@ -33,12 +33,15 @@ func all_values_equal(list):
 	return true
 
 func _on_candle_lit(candle_id, value, check_winner):
+	if GameManager.game_state == GameManager.GameState.ROUND or GameManager.game_state == GameManager.GameState.POST_ROUND:
+		if GameManager.candles_belong_to[candle_id] != value:
+			GameManager.play_sound("CandleLight")
 	GameManager.candles_belong_to[candle_id] = value
 	update_fire_color()
 	if not check_winner:
 		return
 	var first = GameManager.candles_belong_to[0]
-	if (first == 1 or first == 2) and all_values_equal(GameManager.candles_belong_to):
+	if (first == 1 or first == 2) and all_values_equal(GameManager.candles_belong_to) and GameManager.game_state != GameManager.GameState.POST_ROUND:
 		GameManager.post_round_started.emit(first)
 
 func _on_area_2d_body_entered(body):

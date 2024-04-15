@@ -50,12 +50,24 @@ func _on_pre_round_start():
 	game_state = GameState.PRE_ROUND
 	
 func _on_round_start():
+	play_sound("Drums", -1)
 	game_state = GameState.ROUND
 	
 func _on_post_round_start(winner: int):
+	play_sound("Demon")
+	print("play")
 	game_state = GameState.POST_ROUND
 	
 func hitlag(time_scale, duration):
 	Engine.time_scale = time_scale
 	await(get_tree().create_timer(duration * time_scale).timeout)
 	Engine.time_scale = 1.0
+	
+func play_sound(sound, db = 0):
+	var ap = AudioStreamPlayer.new()
+	get_tree().get_root().add_child(ap)
+	ap.stream = load("res://Sounds/" + sound + ".mp3")
+	ap.volume_db = db
+	ap.play()
+	await ap.finished
+	ap.queue_free()

@@ -13,8 +13,8 @@ signal health_changed(health_value)
 
 @export var id: int = 2
 var health = 100
-const ACCELERATION = 1800
-const MAX_SPEED = 400
+const ACCELERATION = 2000
+const MAX_SPEED = 500
 const FRICTION = 800
 
 var using_gamepad: bool = false
@@ -24,8 +24,8 @@ var rotation_offset = -PI/2
 
 var is_in_hitstun: bool = false;
 
-const PASSIVE_FORCE = 450
-const PASSIVE_FORCE_TRANSFERRED = 1.2
+const PASSIVE_FORCE = 500
+const PASSIVE_FORCE_TRANSFERRED = 1.5
 
 var last_barrier_point = Vector2.ZERO
 var barrier: Node2D
@@ -63,7 +63,10 @@ func create_barrier():
 @rpc("call_local")
 func update_barrier():
 	if barrier != null:
-		barrier.update_last_point(global_position)
+		if barrier.line.get_point_count() > 3 and velocity.length() <= 0.05:
+			release_barrier()
+		else:
+			barrier.update_last_point(global_position)
 		
 @rpc("call_local")
 func release_barrier():
@@ -133,18 +136,19 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed(pause):
 		get_tree().quit()
 	
-	#temporarily disabling barrier in online because it doesn't work
-	if Input.is_action_just_pressed(melee) and !is_attacking() and not GameManager.is_online:
-		play_melee_effects.rpc()
-		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-		
-	if Input.is_action_just_pressed(special) and !is_attacking():
-		play_special_effects.rpc()
-		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-		
-	if Input.is_action_just_pressed(shield) and !is_attacking():
-		play_shield_effects.rpc()
-		#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+	if GameManager.game_state == GameManager.GameState.ROUND:
+		#temporarily disabling barrier in online because it doesn't work
+		if Input.is_action_just_pressed(melee) and !is_attacking() and not GameManager.is_online:
+			play_melee_effects.rpc()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+			
+		if Input.is_action_just_pressed(special) and !is_attacking():
+			play_special_effects.rpc()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+			
+		if Input.is_action_just_pressed(shield) and !is_attacking():
+			play_shield_effects.rpc()
+			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 func is_attacking():
 	return anim_player.current_animation == "special"
@@ -233,6 +237,7 @@ func play_parry_effects():
 	anim_player.play("parry")
 	shield_node.visible = false
 	parry_particles.restart()
+	GameManager.play_sound("Parry")
 	GameManager.hitlag(0.05, 1.0)
 	var candle_id = get_available_candle()
 	if candle_id >= 0:
@@ -263,6 +268,7 @@ func play_passive_effects():
 	anim_player.play("passive")
 	passive_hit_particles.restart()
 	GameManager.hitlag(0.05, 0.2)
+	GameManager.play_sound("Hit")
 	passive_hit_particles.emitting = true
 
 @rpc("any_peer")
