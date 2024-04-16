@@ -8,3 +8,4 @@ res://Candle/Candle.tscn
 res://Barrier/Barrier.tscn
 res://MultiplayerTest/MultiplayerGame.tscn
 res://Player/Player.gd
+res://Camera/Camera.gd

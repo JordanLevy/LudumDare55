@@ -165,6 +165,10 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector(left, right, up, down)
 	var direction = input_dir.normalized()
 	
+	if is_in_hitstun:
+		direction = Vector2.ZERO
+		if velocity.length() < 150:
+			is_in_hitstun = false
 	if direction == Vector2.ZERO:
 		if velocity.length() > (FRICTION * delta):
 			velocity -= velocity.normalized() * FRICTION * delta
@@ -304,6 +308,7 @@ func _on_passive_hitbox_body_entered(body):
 	else:
 		var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
 		body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
+		body.is_in_hitstun = true
 		if GameManager.is_online and is_multiplayer_authority():
 			play_passive_effects.rpc()
 		else:
