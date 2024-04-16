@@ -32,13 +32,10 @@ sources/0 = SubResource("TileSetAtlasSource_hblx3")
 
 [node name="HUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1070.0
-offset_bottom = -566.0
-grow_horizontal = 2
-grow_vertical = 2
+grow_horizontal = 0
 
 [node name="Clock" type="Label" parent="CanvasLayer/HUD"]
 visible = false
@@ -65,9 +62,9 @@ grow_horizontal = 2
 
 [node name="ControlsToggle" type="TextureButton" parent="CanvasLayer/HUD"]
 layout_mode = 2
-offset_left = -125.07
+offset_left = -212.07
 offset_top = 1.0
-offset_right = 8.505
+offset_right = -78.495
 offset_bottom = 64.0
 size_flags_horizontal = 8
 script = ExtResource("3_nqon8")
@@ -89,10 +86,10 @@ texture = ExtResource("2_43pyo")
 
 [node name="MuteToggle" type="TextureButton" parent="CanvasLayer/HUD"]
 layout_mode = 2
-offset_left = 12.0
-offset_top = 1.0
-offset_right = 76.0
-offset_bottom = 65.0
+offset_left = -68.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = 68.0
 size_flags_horizontal = 8
 toggle_mode = true
 texture_normal = ExtResource("3_r6gw2")
@@ -176,6 +173,7 @@ text = "START LOCAL MULTIPLAYER RITUAL"
 [node name="Pentagram" type="Line2D" parent="."]
 z_index = -1
 texture_repeat = 2
+points = PackedVector2Array(833, 48)
 width = 16.0
 texture = ExtResource("7_hwa7f")
 texture_mode = 1
