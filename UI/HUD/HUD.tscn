@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=3 uid="uid://dm4sitx5yv64l"]
+
+[ext_resource type="Script" path="res://UI/Controls/ControlsToggle.gd" id="1_4yyvb"]
+[ext_resource type="Texture2D" uid="uid://brxu8jfh481bj" path="res://UI/Controls/Keys.png" id="2_skp87"]
+[ext_resource type="Texture2D" uid="uid://np6hspqamnst" path="res://UI/Controls/Controller.png" id="3_8i1t3"]
+[ext_resource type="Texture2D" uid="uid://b8sh7i134inr0" path="res://UI/SoundIcons/SoundIcon1.png" id="4_uo2jt"]
+[ext_resource type="Texture2D" uid="uid://cmxm3jqryepuq" path="res://UI/SoundIcons/SoundIcon2.png" id="5_qjujq"]
+[ext_resource type="Script" path="res://UI/MuteToggle/MuteToggle.gd" id="6_qbs6m"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+
+[node name="Clock" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -99.0
+offset_right = 99.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Waiting for other player..."
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.5
+offset_right = 75.5
+offset_bottom = 27.0
+grow_horizontal = 2
+
+[node name="ControlsToggle" type="TextureButton" parent="."]
+layout_mode = 2
+offset_left = -212.07
+offset_top = 1.0
+offset_right = -78.495
+offset_bottom = 64.0
+size_flags_horizontal = 8
+script = ExtResource("1_4yyvb")
+key_icon = ExtResource("2_skp87")
+control_icon = ExtResource("3_8i1t3")
+
+[node name="TextureRect" type="TextureRect" parent="ControlsToggle"]
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("2_skp87")
+
+[node name="TextureRect2" type="TextureRect" parent="ControlsToggle"]
+layout_mode = 2
+offset_left = 68.0
+offset_right = 132.0
+offset_bottom = 64.0
+texture = ExtResource("3_8i1t3")
+
+[node name="MuteToggle" type="TextureButton" parent="."]
+layout_mode = 2
+offset_left = -68.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = 68.0
+size_flags_horizontal = 8
+toggle_mode = true
+texture_normal = ExtResource("4_uo2jt")
+texture_pressed = ExtResource("5_qjujq")
+script = ExtResource("6_qbs6m")
+
+[connection signal="pressed" from="ControlsToggle" to="ControlsToggle" method="_on_pressed"]
+[connection signal="toggled" from="MuteToggle" to="MuteToggle" method="_on_toggled"]

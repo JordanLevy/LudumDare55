@@ -116,6 +116,11 @@ func set_start_position():
 		
 
 func set_layers():
+	for i in range(1, 5):
+		set_collision_layer_value(i, false)
+		set_collision_mask_value(i, false)
+		$PassiveHitbox.set_collision_layer_value(i, false)
+		$PassiveHitbox.set_collision_mask_value(i, false)
 	if id == 1:
 		set_collision_layer_value(1, true)
 		set_collision_mask_value(4, true)
@@ -136,9 +141,9 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed(pause):
 		get_tree().quit()
 	
-	if GameManager.game_state == GameManager.GameState.ROUND:
+	if true or GameManager.game_state == GameManager.GameState.ROUND:
 		#temporarily disabling barrier in online because it doesn't work
-		if Input.is_action_just_pressed(melee) and !is_attacking() and not GameManager.is_online:
+		if Input.is_action_just_pressed(melee) and !is_attacking():
 			play_melee_effects.rpc()
 			#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 			

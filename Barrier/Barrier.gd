@@ -20,7 +20,6 @@ func add_point_to_line(point: Vector2):
 		segment_shape.a = line.get_point_position(line.get_point_count() - 2)
 		segment_shape.b = line.get_point_position(line.get_point_count() - 1)
 		collision_shape.shape = segment_shape
-		print(default_collision_layer)
 		set_collision_layer_value(default_collision_layer, true)
 		set_collision_mask_value(default_collision_mask, true)
 		add_child(collision_shape)

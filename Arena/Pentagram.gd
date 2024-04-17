@@ -38,14 +38,14 @@ func _ready():
 func all_players_inside_circle(players: Dictionary):
 	var players_list = players.values()
 	for player in players_list:
-		if player.position.length() > radius:
+		if player.position.length() > radius - 50:
 			return false
 	return true
 	
 func all_players_outside_circle(players: Dictionary):
 	var players_list = players.values()
 	for player in players_list:
-		if player.position.length() < radius:
+		if player.position.length() < radius + 100:
 			return false
 	return true
 

@@ -1,12 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://dd4e80pfjpkau"]
+[gd_scene load_steps=12 format=3 uid="uid://dd4e80pfjpkau"]
 
-[ext_resource type="Texture2D" uid="uid://brxu8jfh481bj" path="res://UI/Controls/Keys.png" id="1_lqp42"]
-[ext_resource type="Texture2D" uid="uid://np6hspqamnst" path="res://UI/Controls/Controller.png" id="2_43pyo"]
+[ext_resource type="PackedScene" uid="uid://dm4sitx5yv64l" path="res://UI/HUD/HUD.tscn" id="1_kfd20"]
 [ext_resource type="PackedScene" uid="uid://b7sbw33fnm4er" path="res://Player/Player.tscn" id="2_mrr0f"]
-[ext_resource type="Script" path="res://UI/Controls/ControlsToggle.gd" id="3_nqon8"]
-[ext_resource type="Texture2D" uid="uid://b8sh7i134inr0" path="res://UI/SoundIcons/SoundIcon1.png" id="3_r6gw2"]
-[ext_resource type="Texture2D" uid="uid://cmxm3jqryepuq" path="res://UI/SoundIcons/SoundIcon2.png" id="4_6bndv"]
-[ext_resource type="Script" path="res://UI/MuteToggle/MuteToggle.gd" id="5_10axi"]
 [ext_resource type="Texture2D" uid="uid://bkf81iku1b2cq" path="res://UI/Title.png" id="6_c4e20"]
 [ext_resource type="Texture2D" uid="uid://7gxhvei0xdh0" path="res://Arena/Blood.png" id="7_hwa7f"]
 [ext_resource type="Script" path="res://Arena/Pentagram.gd" id="8_slmu6"]
@@ -30,71 +25,7 @@ sources/0 = SubResource("TileSetAtlasSource_hblx3")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HUD" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-grow_horizontal = 0
-
-[node name="Clock" type="Label" parent="CanvasLayer/HUD"]
-visible = false
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -99.0
-offset_right = 99.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "Waiting for other player..."
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/HUD"]
-visible = false
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -75.5
-offset_right = 75.5
-offset_bottom = 27.0
-grow_horizontal = 2
-
-[node name="ControlsToggle" type="TextureButton" parent="CanvasLayer/HUD"]
-layout_mode = 2
-offset_left = -212.07
-offset_top = 1.0
-offset_right = -78.495
-offset_bottom = 64.0
-size_flags_horizontal = 8
-script = ExtResource("3_nqon8")
-key_icon = ExtResource("1_lqp42")
-control_icon = ExtResource("2_43pyo")
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD/ControlsToggle"]
-layout_mode = 2
-offset_right = 64.0
-offset_bottom = 64.0
-texture = ExtResource("1_lqp42")
-
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/HUD/ControlsToggle"]
-layout_mode = 2
-offset_left = 68.0
-offset_right = 132.0
-offset_bottom = 64.0
-texture = ExtResource("2_43pyo")
-
-[node name="MuteToggle" type="TextureButton" parent="CanvasLayer/HUD"]
-layout_mode = 2
-offset_left = -68.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = 68.0
-size_flags_horizontal = 8
-toggle_mode = true
-texture_normal = ExtResource("3_r6gw2")
-texture_pressed = ExtResource("4_6bndv")
-script = ExtResource("5_10axi")
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("1_kfd20")]
 
 [node name="MainMenu" type="Control" parent="CanvasLayer"]
 visible = false
@@ -217,8 +148,6 @@ id = 1
 
 [node name="Player2" parent="." instance=ExtResource("2_mrr0f")]
 
-[connection signal="pressed" from="CanvasLayer/HUD/ControlsToggle" to="CanvasLayer/HUD/ControlsToggle" method="_on_pressed"]
-[connection signal="toggled" from="CanvasLayer/HUD/MuteToggle" to="CanvasLayer/HUD/MuteToggle" method="_on_toggled"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Local" to="." method="_on_local_pressed"]

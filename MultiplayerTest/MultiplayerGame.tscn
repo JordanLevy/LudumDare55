@@ -1,13 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://cbe4g60utb2c3"]
+[gd_scene load_steps=14 format=3 uid="uid://cbe4g60utb2c3"]
 
 [ext_resource type="Script" path="res://MultiplayerTest/MultiplayerGame.gd" id="1_8e57u"]
 [ext_resource type="PackedScene" uid="uid://b7sbw33fnm4er" path="res://Player/Player.tscn" id="2_qia5a"]
-[ext_resource type="Texture2D" uid="uid://b8sh7i134inr0" path="res://UI/SoundIcons/SoundIcon1.png" id="3_rgrgf"]
 [ext_resource type="Texture2D" uid="uid://b146qeq12c8f3" path="res://Arena/Brick.png" id="3_sm1g4"]
+[ext_resource type="PackedScene" uid="uid://dm4sitx5yv64l" path="res://UI/HUD/HUD.tscn" id="3_wv3o7"]
 [ext_resource type="Texture2D" uid="uid://7gxhvei0xdh0" path="res://Arena/Blood.png" id="4_4uqvw"]
-[ext_resource type="Texture2D" uid="uid://cmxm3jqryepuq" path="res://UI/SoundIcons/SoundIcon2.png" id="4_m28de"]
 [ext_resource type="Script" path="res://Arena/Pentagram.gd" id="4_r4eg4"]
-[ext_resource type="Script" path="res://UI/MuteToggle/MuteToggle.gd" id="5_3g6op"]
 [ext_resource type="PackedScene" uid="uid://c1ra0mrd25srh" path="res://Candle/Candle.tscn" id="6_3wg2c"]
 [ext_resource type="Texture2D" uid="uid://bkf81iku1b2cq" path="res://UI/Title.png" id="6_380gr"]
 [ext_resource type="Script" path="res://Camera/Camera.gd" id="7_jmwej"]
@@ -51,51 +49,7 @@ spawn_path = NodePath("..")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HUD" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1070.0
-offset_bottom = -566.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Clock" type="Label" parent="CanvasLayer/HUD"]
-visible = false
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -99.0
-offset_right = 99.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "Waiting for other player..."
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/HUD"]
-visible = false
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -75.5
-offset_right = 75.5
-offset_bottom = 27.0
-grow_horizontal = 2
-
-[node name="MuteToggle" type="TextureButton" parent="CanvasLayer/HUD"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -64.0
-offset_bottom = 64.0
-grow_horizontal = 0
-toggle_mode = true
-texture_normal = ExtResource("3_rgrgf")
-texture_pressed = ExtResource("4_m28de")
-script = ExtResource("5_3g6op")
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("3_wv3o7")]
 
 [node name="MainMenu" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -215,7 +169,6 @@ script = ExtResource("7_jmwej")
 replication_config = SubResource("SceneReplicationConfig_iic0s")
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]
-[connection signal="toggled" from="CanvasLayer/HUD/MuteToggle" to="CanvasLayer/HUD/MuteToggle" method="_on_toggled"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Local" to="." method="_on_local_pressed"]
