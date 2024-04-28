@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="RitualRumble"
-run/main_scene="res://MultiplayerTest/MultiplayerGame.tscn"
+run/main_scene="res://MultiplayerGame/MultiplayerGame.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*res://GameManager/GameManager.tscn"
-EncryptionManager="*res://MultiplayerTest/EncryptionManager.gd"
+EncryptionManager="*res://MultiplayerGame/EncryptionManager.gd"
 
 [display]
 

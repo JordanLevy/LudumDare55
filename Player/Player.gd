@@ -10,7 +10,14 @@ signal health_changed(health_value)
 @onready var parry_particles = $ParryParticles
 @onready var shield_node = $Shield
 @export var barrier_scene: PackedScene
+var pentagram: Node2D
 
+@export var is_cpu: bool = false
+var target_candle: Node2D = null
+var target_position: Vector2 = Vector2.ZERO
+var target_rotation: float = 0.0
+const CPU_ROTATION_SPEED: float = 5
+var launch_velocity: float = 0.0
 @export var id: int = 2
 var health = 100
 const ACCELERATION = 2000
@@ -24,8 +31,10 @@ var rotation_offset = -PI/2
 
 var is_in_hitstun: bool = false;
 
-const PASSIVE_FORCE = 500
-const PASSIVE_FORCE_TRANSFERRED = 1.5
+const PASSIVE_FORCE = 1000
+const PASSIVE_FORCE_TRANSFERRED = 1.2
+const MIN_FORCE = 1000
+const MAX_FORCE = 1500
 
 var last_barrier_point = Vector2.ZERO
 var barrier: Node2D
@@ -38,10 +47,18 @@ var right = 'right'
 var up = 'up'
 var down = 'down'
 var pause = 'pause'
+var opponent: Player
 
 func _enter_tree():
+	
 	if GameManager.is_online:
 		set_multiplayer_authority(str(name).to_int())
+	elif id == 1:
+		pentagram = get_tree().get_root().get_node("LocalGame/Pentagram")
+		opponent = get_tree().get_root().get_node("LocalGame/Player2")
+	else:
+		pentagram = get_tree().get_root().get_node("LocalGame/Pentagram")
+		opponent = get_tree().get_root().get_node("LocalGame/Player1")
 
 @rpc("call_local")
 func create_barrier():
@@ -75,11 +92,20 @@ func release_barrier():
 func _ready():
 	GameManager.controls_changed.connect(_on_controls_changed)
 	GameManager.controls_changed.emit(0)
+	GameManager.round_started.connect(_on_round_start)
 	set_texture()
 	set_start_position()
 	set_layers()
 	GameManager.players[id] = self
 	if GameManager.is_online and not is_multiplayer_authority(): return
+
+func set_new_target_candle():
+	target_candle = pentagram.get_random_target_candle(self)
+	if target_candle:
+		set_target_position(target_candle.global_position)
+
+func _on_round_start():
+	set_new_target_candle()
 
 func _on_controls_changed(config):
 	var mapping = GameManager.mapping_p1
@@ -167,13 +193,26 @@ func _physics_process(delta):
 	#if GameManager.game_state != GameManager.GameState.PLAYING:
 		#return
 
-	var input_dir = Input.get_vector(left, right, up, down)
-	var direction = input_dir.normalized()
+	var input_dir = Vector2.ZERO
+	if is_cpu:
+		if GameManager.game_state == GameManager.GameState.PRE_ROUND:
+			set_target_position(Vector2(0, 200))
+		elif GameManager.game_state == GameManager.GameState.POST_ROUND:
+			set_target_position(Vector2(0, 550))
+		elif target_candle == null or GameManager.candles_belong_to[target_candle.id] == id:
+			set_new_target_candle()
+		input_dir = calculate_steering_force()
+	else:
+		input_dir = Input.get_vector(left, right, up, down)
 	
 	if is_in_hitstun:
-		direction = Vector2.ZERO
-		if velocity.length() < 150:
+		input_dir *= 0
+		if velocity.length() < launch_velocity*0.1:
 			is_in_hitstun = false
+	
+	var direction = input_dir.normalized()
+	
+	
 	if direction == Vector2.ZERO:
 		if velocity.length() > (FRICTION * delta):
 			velocity -= velocity.normalized() * FRICTION * delta
@@ -183,8 +222,11 @@ func _physics_process(delta):
 		velocity += direction * ACCELERATION * delta
 		velocity = velocity.limit_length(MAX_SPEED)
 
-	
-	if using_gamepad:
+	if is_cpu:
+		var diff = opponent.global_position - global_position
+		set_target_rotation(atan2(diff.y, diff.x) + rotation_offset)
+		rotation = lerp_angle(rotation, target_rotation, CPU_ROTATION_SPEED * delta)
+	elif using_gamepad:
 		if input_dir.length_squared() > 0.5:
 			prev_joystick_position = input_dir
 		rotation = rotation_offset + atan2(prev_joystick_position.y, prev_joystick_position.x)
@@ -221,6 +263,17 @@ func _physics_process(delta):
 		var collision_info = move_and_collide(velocity * delta)
 		if collision_info:
 			velocity = velocity.bounce(collision_info.get_normal())
+
+func calculate_steering_force() -> Vector2:
+	var desired_velocity = (target_position - global_position)
+	var steering = desired_velocity - velocity
+	return steering
+
+func set_target_position(target: Vector2):
+	target_position = target
+	
+func set_target_rotation(target: float):
+	target_rotation = target
 
 @rpc("call_local")
 func play_melee_effects():
@@ -311,8 +364,13 @@ func _on_passive_hitbox_body_entered(body):
 		else:
 			body.play_parry_effects()
 	else:
-		var force_imparted = (velocity.length() * PASSIVE_FORCE_TRANSFERRED)
-		body.velocity += (body.position - position).normalized() * (PASSIVE_FORCE + force_imparted)
+		var effective_velocity = velocity.length()
+		if effective_velocity < 100:
+			effective_velocity = 0
+		var force_imparted = PASSIVE_FORCE + (effective_velocity * PASSIVE_FORCE_TRANSFERRED)
+		force_imparted = clamp(force_imparted, MIN_FORCE, MAX_FORCE)
+		body.velocity += (body.position - position).normalized() * force_imparted
+		body.launch_velocity = body.velocity.length()
 		body.is_in_hitstun = true
 		if GameManager.is_online and is_multiplayer_authority():
 			play_passive_effects.rpc()

@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://cbe4g60utb2c3"]
 
-[ext_resource type="Script" path="res://MultiplayerTest/MultiplayerGame.gd" id="1_8e57u"]
+[ext_resource type="Script" path="res://MultiplayerGame/MultiplayerGame.gd" id="1_8e57u"]
 [ext_resource type="PackedScene" uid="uid://b7sbw33fnm4er" path="res://Player/Player.tscn" id="2_qia5a"]
 [ext_resource type="Texture2D" uid="uid://b146qeq12c8f3" path="res://Arena/Brick.png" id="3_sm1g4"]
 [ext_resource type="PackedScene" uid="uid://dm4sitx5yv64l" path="res://UI/HUD/HUD.tscn" id="3_wv3o7"]
@@ -124,6 +124,11 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "START LOCAL MULTIPLAYER RITUAL"
 
+[node name="Singleplayer" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "START PLAYER VS CPU RITUAL"
+
 [node name="Pentagram" type="Line2D" parent="."]
 z_index = -1
 texture_repeat = 2
@@ -172,3 +177,4 @@ replication_config = SubResource("SceneReplicationConfig_iic0s")
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Local" to="." method="_on_local_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Singleplayer" to="." method="_on_singleplayer_pressed"]

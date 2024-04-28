@@ -86,3 +86,18 @@ func _on_post_round_started(winner: int):
 		self_modulate = Color(0, 0, 255)
 		label.self_modulate = Color(0, 0, 255)
 		label.text = "Blue wins!\nBoth players must exit the circle to reset"
+		
+func get_random_target_candle(player: Player):
+	var filtered_candles = candles.filter(func(c): return GameManager.candles_belong_to[c.id] != player.id)
+	var distances = []
+	for candle in filtered_candles:
+		var distance = (global_position - candle.global_position).length()
+		distances.append({"candle": candle, "distance": distance})
+	distances.sort_custom(func(a, b): return a["distance"] < b["distance"])
+	if distances.size() > 0:
+		var min_distance = distances[0]["distance"]
+		var closest_elements = distances.filter(func(c): return c["distance"] == min_distance)
+		var random_index = randi() % closest_elements.size()
+		return closest_elements[random_index]["candle"]
+	else:
+		return null
