@@ -7,17 +7,79 @@ extends Node
 
 @onready var local_game_scene = preload("res://LocalGame/LocalGame.tscn")
 
-const PORT = 8080
+var ip = "localhost"
+var port = 7000
+
 @export var player_scene: PackedScene
 		
 func _ready():
-	pass
-
-func _on_host_pressed():
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_server(PORT)
-	multiplayer.multiplayer_peer = peer
+	var args = Array(OS.get_cmdline_args())
+	print("args: " + str(args))
+	if args.has("-s"):
+		print("loading server...")
+		startServer()
+	else:
+		pass
+		#print("loading client...")
+		#startClient()
+		
+func startServer():
+	print("Starting server...")
+	
+	multiplayer.peer_connected.connect(self._on_client_connected)
+	multiplayer.peer_disconnected.connect(self._on_client_disconnected)
+	
+	# Create server
+	var server = ENetMultiplayerPeer.new()
+	server.create_server(port, 2)
+	multiplayer.multiplayer_peer = server
 	start_game()
+	
+func startClient():
+	multiplayer.connected_to_server.connect(self.connected_to_server)
+	multiplayer.server_disconnected.connect(self.disconnected_from_server)
+	
+	print("Creating client...")
+	
+	# Create client
+	var client = ENetMultiplayerPeer.new()
+	client.create_client(ip, port)
+	multiplayer.multiplayer_peer = client
+	start_game()
+	
+	
+# Only called from Clients
+@rpc("any_peer")
+func send_message_to_server(message: String):
+	# the is_server check here is likely unnecessary because we marked it as any_peer
+	if multiplayer.is_server():
+		print("Message received on server: " + message)
+		#send_message_to_client.rpc("Right back at ya! Client. Count:" + str(messageCountFromClient))
+		
+# Only called from Server
+@rpc("authority")
+func send_message_to_client(message: String):
+	print("Message received on client: " + message)
+	
+# client callbacks
+func connected_to_server():
+	print("Connected to server...")
+	
+func disconnected_from_server():
+	print("disconnected from server...")
+	
+	
+# server callbacks
+func _on_client_connected(clientId):
+	print("Client connected: " + str(clientId))
+	
+func _on_client_disconnected(clientId):
+	print("Client disconnected: " + str(clientId))
+	
+# UI
+func _send_message_to_server():
+	print("Sending message to server...")
+	send_message_to_server.rpc("Hello from client: " + str(multiplayer.get_unique_id()))
 	
 func start_game():
 	main_menu.hide()
@@ -27,12 +89,11 @@ func start_game():
 		multiplayer.peer_connected.connect(add_player)
 		multiplayer.peer_disconnected.connect(del_player)
 
+func _on_host_pressed():
+	startServer()
+
 func _on_join_pressed():
-	var ip = "127.0.0.1"
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip, PORT)
-	multiplayer.multiplayer_peer = peer
-	start_game()
+	startClient()
 
 func add_player(id: int):
 	print("add player ", id)

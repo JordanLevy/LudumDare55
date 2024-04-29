@@ -28,7 +28,6 @@ sources/0 = SubResource("TileSetAtlasSource_hblx3")
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("1_kfd20")]
 
 [node name="MainMenu" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -86,14 +85,9 @@ text = "HOST RITUAL"
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 
-[node name="ConnectionCode" type="TextEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Ritual ID"
-
 [node name="Join" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "JOIN RITUAL"
 
 [node name="Local" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
