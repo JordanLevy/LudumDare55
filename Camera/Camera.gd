@@ -4,6 +4,8 @@ var minZoom : float = 0.5
 var maxZoom : float = 0.7
 var zoomSpeed : float = 0.05
 var panSpeed: float = 0.05
+var desiredOffset: Vector2
+var desiredZoom: float
 
 func find_max_distance(targets: Dictionary) -> float:
 	var max_distance = 0.0
@@ -27,19 +29,20 @@ func clamp_camera_bounds(z: float, pos: Vector2):
 	return Vector2(clamp(pos.x, -x, x), clamp(pos.y, -y, y))
 	
 func _process(delta):
-	if GameManager.players.size() == 0:
-		return
+	if !GameManager.is_online || multiplayer.is_server():
+		if GameManager.players.size() == 0:
+			return
 
-	var average = Vector2.ZERO
-	for player in GameManager.players.values():
-		average += player.global_position
-	average /= (GameManager.num_players + 1)
+		desiredOffset = Vector2.ZERO
+		for player in GameManager.players.values():
+			desiredOffset += player.global_position
+		desiredOffset /= (GameManager.num_players + 1)
 
-	var maxDistance = find_max_distance(GameManager.players)
-	var desiredZoom = clamp(1.0 / (maxDistance / 300.0), minZoom, maxZoom)
+		var maxDistance = find_max_distance(GameManager.players)
+		desiredZoom = clamp(1.0 / (maxDistance / 300.0), minZoom, maxZoom)
 
-	average = clamp_camera_bounds(desiredZoom, average)
-	offset = offset.lerp(average, panSpeed)
+		desiredOffset = clamp_camera_bounds(desiredZoom, desiredOffset)
+	offset = offset.lerp(desiredOffset, panSpeed)
 
 	zoom = zoom.lerp(Vector2(desiredZoom, desiredZoom), zoomSpeed)
 	

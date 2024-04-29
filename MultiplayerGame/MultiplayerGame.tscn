@@ -23,21 +23,21 @@ tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_hblx3")
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iic0s"]
-properties/0/path = NodePath("Camera2D:zoom")
+properties/0/path = NodePath("Pentagram/Label:text")
 properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath("Camera2D:offset")
+properties/0/replication_mode = 2
+properties/1/path = NodePath("Pentagram/Label:self_modulate")
 properties/1/spawn = true
-properties/1/replication_mode = 1
-properties/2/path = NodePath("Pentagram/Label:text")
+properties/1/replication_mode = 2
+properties/2/path = NodePath("Pentagram:self_modulate")
 properties/2/spawn = true
 properties/2/replication_mode = 2
-properties/3/path = NodePath("Pentagram/Label:self_modulate")
+properties/3/path = NodePath("Camera2D:desiredZoom")
 properties/3/spawn = true
-properties/3/replication_mode = 2
-properties/4/path = NodePath("Pentagram:self_modulate")
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Camera2D:desiredOffset")
 properties/4/spawn = true
-properties/4/replication_mode = 2
+properties/4/replication_mode = 1
 
 [node name="MultiplayerGame" type="Node2D"]
 script = ExtResource("1_8e57u")

@@ -1,7 +1,6 @@
 extends Node
 
 @onready var main_menu = $CanvasLayer/MainMenu
-@onready var connection_code = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/ConnectionCode
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
 
