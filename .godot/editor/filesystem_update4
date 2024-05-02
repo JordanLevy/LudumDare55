@@ -1,12 +1,11 @@
-res://MultiplayerGame/MultiplayerGame.tscn
+res://GameManager/GameManager.tscn
 res://Arena/Pentagram.gd
 res://Shield/Shield.gdshader
 res://Arena/Pentagram.tres
-res://MultiplayerGame/MultiplayerGame.gd
 res://Player/Player.tscn
 res://LocalGame/LocalGame.tscn
-res://GameManager/GameManager.tscn
 res://Candle/Candle.tscn
 res://Barrier/Barrier.tscn
 res://UI/HUD/HUD.tscn
-res://Camera/Camera.gd
+res://MultiplayerGame/MultiplayerGame.tscn
+res://Player/Player.gd

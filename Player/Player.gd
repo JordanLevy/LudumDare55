@@ -13,7 +13,7 @@ signal health_changed(health_value)
 var pentagram: Node2D
 
 @export var is_cpu: bool = false
-var target_candle: Node2D = null
+var target_candle: Dictionary = {}
 var target_position: Vector2 = Vector2.ZERO
 var target_rotation: float = 0.0
 const CPU_ROTATION_SPEED: float = 5
@@ -102,7 +102,7 @@ func _ready():
 func set_new_target_candle():
 	target_candle = pentagram.get_random_target_candle(self)
 	if target_candle:
-		set_target_position(target_candle.global_position)
+		set_target_position(target_candle["position"])
 
 func _on_round_start():
 	set_new_target_candle()
@@ -199,7 +199,7 @@ func _physics_process(delta):
 			set_target_position(Vector2(0, 200))
 		elif GameManager.game_state == GameManager.GameState.POST_ROUND:
 			set_target_position(Vector2(0, 550))
-		elif target_candle == null or GameManager.candles_belong_to[target_candle.id] == id:
+		elif target_candle.size() == 0 or GameManager.candles_belong_to[target_candle["candle"].id] == id:
 			set_new_target_candle()
 		input_dir = calculate_steering_force()
 	else:
@@ -252,12 +252,16 @@ func _physics_process(delta):
 	
 	if global_position.x > width:
 		global_position.x -= width * 2
+		set_target_position(target_position - + Vector2(width * 2, 0))
 	elif global_position.x < -width:
 		global_position.x += width * 2
+		set_target_position(target_position + Vector2(width * 2, 0))
 	if global_position.y > height:
 		global_position.y -= height * 2
+		set_target_position(target_position - Vector2(0, height * 2))
 	elif global_position.y < -height:
 		global_position.y += height * 2
+		set_target_position(target_position + Vector2(0, height * 2))
 
 	if !anim_player.current_animation == "shield":
 		var collision_info = move_and_collide(velocity * delta)

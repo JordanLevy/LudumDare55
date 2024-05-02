@@ -88,16 +88,26 @@ func _on_post_round_started(winner: int):
 		label.text = "Blue wins!\nBoth players must exit the circle to reset"
 		
 func get_random_target_candle(player: Player):
+	var viewport_size = get_viewport_rect().size
+	var w = viewport_size.x * 2
+	var h = viewport_size.y * 2
 	var filtered_candles = candles.filter(func(c): return GameManager.candles_belong_to[c.id] != player.id)
 	var distances = []
 	for candle in filtered_candles:
-		var distance = (global_position - candle.global_position).length()
-		distances.append({"candle": candle, "distance": distance})
+		for i in [-1, 0, 1]:
+			for j in [-1, 0, 1]:
+				var c = candle.global_position
+				var di = Vector2(w * i, h * j)
+				var target_position = c + di
+				print(candle.id, ' ', i, ' ', j, ' ', c, ' ', di, ' ', target_position)
+				var distance = (global_position - target_position).length()
+				distances.append({"candle": candle, "position": target_position, "distance": distance})
 	distances.sort_custom(func(a, b): return a["distance"] < b["distance"])
+	print()
 	if distances.size() > 0:
-		var min_distance = distances[0]["distance"]
-		var closest_elements = distances.filter(func(c): return c["distance"] == min_distance)
+		var min_distance = distances[distances.size() / 2]["distance"]
+		var closest_elements = distances.filter(func(c): return c["distance"] <= min_distance)
 		var random_index = randi() % closest_elements.size()
-		return closest_elements[random_index]["candle"]
+		return closest_elements[random_index]
 	else:
 		return null

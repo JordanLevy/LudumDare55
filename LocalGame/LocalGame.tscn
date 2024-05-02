@@ -28,6 +28,7 @@ sources/0 = SubResource("TileSetAtlasSource_hblx3")
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("1_kfd20")]
 
 [node name="MainMenu" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5

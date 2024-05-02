@@ -8,15 +8,12 @@
 properties/0/path = NodePath(".:game_state")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath(".:num_players")
+properties/1/path = NodePath(".:timer_end")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath(".:timer_end")
+properties/2/path = NodePath(".:candles_belong_to")
 properties/2/spawn = true
 properties/2/replication_mode = 2
-properties/3/path = NodePath(".:candles_belong_to")
-properties/3/spawn = true
-properties/3/replication_mode = 2
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource("1_2pwom")
@@ -26,5 +23,4 @@ replication_config = SubResource("SceneReplicationConfig_tv364")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_4r1te")
-autoplay = true
 script = ExtResource("3_rj868")

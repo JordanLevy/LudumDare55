@@ -97,7 +97,7 @@ func _on_join_pressed():
 func add_player(id: int):
 	print("add player ", id)
 	var player = player_scene.instantiate()
-	player.id = id
+	player.id = 1
 	player.name = str(id)
 	player.velocity = Vector2.ZERO
 	player.position = Vector2.ZERO
