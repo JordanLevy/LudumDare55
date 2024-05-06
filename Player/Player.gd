@@ -19,6 +19,7 @@ var target_rotation: float = 0.0
 const CPU_ROTATION_SPEED: float = 5
 var launch_velocity: float = 0.0
 @export var id: int = 2
+var peer_id: int
 var health = 100
 const ACCELERATION = 2000
 const MAX_SPEED = 500
@@ -48,6 +49,13 @@ var up = 'up'
 var down = 'down'
 var pause = 'pause'
 var opponent: Player
+
+@rpc("any_peer")
+func update_id(peer_id: int, new_id: int):
+	push_warning(name, ' ', str(new_id))
+	id = new_id
+	set_texture()
+	set_layers()
 
 func _enter_tree():
 	
@@ -93,10 +101,11 @@ func _ready():
 	GameManager.controls_changed.connect(_on_controls_changed)
 	GameManager.controls_changed.emit(0)
 	GameManager.round_started.connect(_on_round_start)
+	peer_id = multiplayer.get_unique_id()
 	set_texture()
 	set_start_position()
 	set_layers()
-	GameManager.players[id] = self
+	GameManager.players[peer_id] = self
 	if GameManager.is_online and not is_multiplayer_authority(): return
 
 func set_new_target_candle():
@@ -185,6 +194,15 @@ func is_attacking():
 	return anim_player.current_animation == "special"
 
 func _physics_process(delta):
+	#var a = ", ".join(GameManager.peer_ids)
+	#var b = ""
+	#for i in GameManager.player_ports:
+		#b += '{' + str(i) + ':' + str(GameManager.player_ports[i]) + '}, '
+	#push_warning(peer_id, ': [', a, ']', '[', b, ']')
+	if GameManager.player_ports.has(peer_id):
+		id = GameManager.player_ports[peer_id] + 1
+		set_texture()
+		set_layers()
 	if GameManager.is_online and not is_multiplayer_authority(): return
 	
 	update_barrier.rpc()

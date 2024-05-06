@@ -17,6 +17,8 @@ static var controls = 0
 static var mapping_p1 = ['_key', '_0', '_0']
 static var mapping_p2 = ['_0', '_key', '_1']
 static var is_online = true
+static var peer_ids = []
+static var player_ports: Dictionary = {}
 
 const COUNTDOWN_DURATION: int = 3
 const ROUND_DURATION: int = 10
