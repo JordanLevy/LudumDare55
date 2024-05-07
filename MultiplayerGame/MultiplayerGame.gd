@@ -93,22 +93,13 @@ func add_player(id: int):
 	print("add player ", id)
 	var player = player_scene.instantiate()
 	GameManager.num_players += 1
-	
+	GameManager.players[id] = player
 	player.name = str(id)
 	player.velocity = Vector2.ZERO
 	player.position = Vector2.ZERO
 	add_child(player, true)
-	GameManager.players[id] = player
-	GameManager.peer_ids.append(id)
-	GameManager.peer_ids.sort()
-	GameManager.player_ports = {}
-	for i in range(len(GameManager.peer_ids)):
-		GameManager.player_ports[GameManager.peer_ids[i]] = i
-	#player.update_id(id, GameManager.num_players)
-	#for i in GameManager.peer_ids:
-		#var p = GameManager.players[i]
-		#p.update_id.rpc_id(p.peer_id, p.peer_id, p.id)
-	#player.update_id.rpc_id(id, id, GameManager.num_players)
+	if GameManager.num_players == 2:
+		GameManager.pre_round_started.emit()
 
 func del_player(id: int):
 	print("del player ", id)

@@ -139,9 +139,9 @@ zoom = Vector2(0.7, 0.7)
 script = ExtResource("11_exmgv")
 
 [node name="Player1" parent="." instance=ExtResource("2_mrr0f")]
-id = 1
 
 [node name="Player2" parent="." instance=ExtResource("2_mrr0f")]
+id = 2
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HBoxContainer/Join" to="." method="_on_join_pressed"]

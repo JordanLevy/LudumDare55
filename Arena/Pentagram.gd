@@ -105,7 +105,7 @@ func get_random_target_candle(player: Player):
 	distances.sort_custom(func(a, b): return a["distance"] < b["distance"])
 	print()
 	if distances.size() > 0:
-		var min_distance = distances[distances.size() / 2]["distance"]
+		var min_distance = distances[distances.size() / 4]["distance"]
 		var closest_elements = distances.filter(func(c): return c["distance"] <= min_distance)
 		var random_index = randi() % closest_elements.size()
 		return closest_elements[random_index]

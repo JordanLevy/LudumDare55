@@ -20,6 +20,9 @@ properties/3/replication_mode = 2
 properties/4/path = NodePath(".:player_ports")
 properties/4/spawn = true
 properties/4/replication_mode = 2
+properties/5/path = NodePath(".:num_players")
+properties/5/spawn = true
+properties/5/replication_mode = 2
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource("1_2pwom")

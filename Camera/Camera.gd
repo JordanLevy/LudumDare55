@@ -36,7 +36,7 @@ func _process(delta):
 		desiredOffset = Vector2.ZERO
 		for player in GameManager.players.values():
 			desiredOffset += player.global_position
-		desiredOffset /= (GameManager.num_players + 1)
+		desiredOffset /= (GameManager.players.size() + 1)
 
 		var maxDistance = find_max_distance(GameManager.players)
 		desiredZoom = clamp(1.0 / (maxDistance / 300.0), minZoom, maxZoom)
